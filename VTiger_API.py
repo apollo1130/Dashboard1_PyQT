@@ -3,14 +3,24 @@ import requests, json
 
 username ='(USERNAME)'
 access_key = '(ACCESS KEY)'
-host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default/'
+host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
+
+
 
 #Get information about me
 #url = f"{host}/me"
 
+#Return information about each of the modules within VTiger
+#url = f"{host}/listtypes?fieldTypeList=null"
+
 #Query Case Module and order by Modified Time
 #Returns the first 100 cases
-url = f"{host}/query?query=Select * FROM Cases order by modifiedtime;"
+#url = f"{host}/query?query=Select * FROM Cases order by modifiedtime;"
+
+#Return the items from the FAQ module
+#url = f"{host}/query?query=Select * FROM Faq;"
+
+
 
 r = requests.get(url, auth=(username, access_key))
 
