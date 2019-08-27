@@ -11,7 +11,7 @@
 #Returns a count of the items that match the query. In this case, returns the amount of open cases assigned to the user with the '19x62' id.
 #>>> r_text
 #{'success': True, 'result': [{'count': '229'}]}
-#url = f"{host}/query?query=SELECT COUNT(*) FROM Cases WHERE assigned_user_id = '19x62' AND casestatus != 'closed' AND casestatus != 'resolved';"
+#url = f"{host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved';"
 #
 #Get information about a module's fields, Cases in this example
 #url = f"{host}/describe?elementType=Employees"
@@ -22,7 +22,7 @@ username ='(USERNAME)'
 access_key = '(ACCESS KEY)'
 host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
 
-def api_call(url):
+def api_call(url, filename):
     '''
     Accepts a URL and returns the text
     '''
@@ -34,7 +34,7 @@ def api_call(url):
     #TODO - Need a better way to write each API call as a separate file
     #Although this won't be necessary long term anyway. It's mainly for testing.
     my_data = json.dumps(r_text, indent=4)
-    with open(f"{url[-11:]}.json", 'w') as f:
+    with open(f"{filename}.json", 'w') as f:
         f.write(my_data)
         
     return r_text
@@ -43,7 +43,7 @@ def user_dictionary(host):
     '''
     Accepts User List and returns a dictionary of the username, first, last and id
     '''
-    user_list = api_call(f"{host}/query?query=Select * FROM Users;")
+    user_list = api_call(f"{host}/query?query=Select * FROM Users;", 'users')
     
     num_of_users = len(user_list['result'])
     username_list = []
@@ -63,7 +63,7 @@ def group_dictionary(host):
     '''
     Accepts Group List and returns a dictionary of the Group Name and ID
     '''
-    group_list = api_call(f"{host}/query?query=Select * FROM Groups;")
+    group_list = api_call(f"{host}/query?query=Select * FROM Groups;", 'groups')
 
     num_of_groups = len(group_list['result'])
     groupname_list = []
@@ -79,9 +79,19 @@ def group_dictionary(host):
         
     return group_dict
 
+def case_count(host):
+    '''
+    Get the amount of cases that aren't closed or resolved and are assigned to the 20x5 group and return the number as an int
+    '''
+    case_amount = api_call(f"{host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved';", "casecount")
+    num_cases = case_amount['result'][0]['count']
+    return num_cases
 
-group_dict = group_dictionary(host)
-user_dict = user_dictionary(host)
-for k, v in group_dict.items():
-    print(f"{k}: {v}")  
+num_cases = case_count(host)
+print(num_cases)
+
+#group_dict = group_dictionary(host)
+#user_dict = user_dictionary(host)
+#for k, v in group_dict.items():
+#    print(f"{k}: {v}")  
 
