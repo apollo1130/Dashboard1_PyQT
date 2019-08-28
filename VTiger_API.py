@@ -8,11 +8,6 @@
 #Query Case Module for cases that are not resolved or closed
 #url = f"{host}/query?query=Select * FROM Cases WHERE casestatus != 'closed' AND casestatus != 'resolved' limit 100,200;"
 #
-#Returns a count of the items that match the query. In this case, returns the amount of open cases assigned to the user with the '19x62' id.
-#>>> r_text
-#{'success': True, 'result': [{'count': '229'}]}
-#url = f"{host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved';"
-#
 #Get information about a module's fields, Cases in this example
 #url = f"{host}/describe?elementType=Employees"
 
@@ -22,22 +17,23 @@ username ='(USERNAME)'
 access_key = '(ACCESS KEY)'
 host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
 
-def api_call(url, filename):
+def api_call(url, filename, fileaccess = 'w'):
     '''
     Accepts a URL and returns the text
     '''
     r = requests.get(url, auth=(username, access_key))
     print(f"The status code is: {r.status_code}")
     r_text = json.loads(r.text)
-    print("Number of Results: ", len(r_text['result']))    
+    print(f"Amount of {filename}: {len(r_text['result'])} \n")    
     #Write to a file for backup/review
     #TODO - Need a better way to write each API call as a separate file
     #Although this won't be necessary long term anyway. It's mainly for testing.
     my_data = json.dumps(r_text, indent=4)
-    with open(f"{filename}.json", 'w') as f:
+    with open(f"{filename}.json", fileaccess) as f:
         f.write(my_data)
-        
+
     return r_text
+
 
 def user_dictionary(host):    
     '''
@@ -55,9 +51,10 @@ def user_dictionary(host):
 
     #Assigns a list of the first name, last name and User ID to the username
     for username in range(num_of_users): 
-        user_dict[username_list[username]] = [user_list['result'][username]['first_name'], user_list['result'][username]['last_name'], user_list['result'][username]['id'], user_list['result'][username]['user_primary_group']]
-        
+        user_dict[username_list[username]] = [user_list['result'][username]['first_name'], user_list['result'][username]['last_name'], user_list['result'][username]['id'], user_list['result'][username]['user_primary_group']]       
+
     return user_dict
+
 
 def group_dictionary(host):    
     '''
@@ -79,19 +76,41 @@ def group_dictionary(host):
         
     return group_dict
 
+
 def case_count(host):
     '''
     Get the amount of cases that aren't closed or resolved and are assigned to the 20x5 group and return the number as an int
     '''
     case_amount = api_call(f"{host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved';", "casecount")
     num_cases = case_amount['result'][0]['count']
+    print(f"The amount of Support Cases is: {num_cases}")
     return num_cases
 
-num_cases = case_count(host)
-print(num_cases)
+def get_cases(host):
+    '''
+    A module can only return a maximum of 100 results. To circumvent that, an offset can be supplied which starts returning data from after the offset.
+    The amount must be looped through in order to retrieve all the results.
+    For instance if there are 250 cases, first 100 is retrieved, then another 100, and then 50.
+    '''
+    num_cases = int(case_count(host))
+    offset = 0
+    if num_cases > 100:
+        while num_cases > 100:
+            cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved' limit {offset}, 100;", "cases", "a")
+            offset += 100
+            num_cases = num_cases - offset
+            if num_cases <= 100:
+                break
+    if num_cases <= 100:
+        cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved' limit {offset}, 100;", "cases", "a")
+
+get_cases(host)
+
+
+##num_cases = case_count(host)
+##print("Number of Support Cases: ", num_cases)
 
 #group_dict = group_dictionary(host)
 #user_dict = user_dictionary(host)
 #for k, v in group_dict.items():
 #    print(f"{k}: {v}")  
-
