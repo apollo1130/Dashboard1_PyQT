@@ -17,7 +17,7 @@ username ='(USERNAME)'
 access_key = '(ACCESS KEY)'
 host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
 
-def api_call(url, filename, fileaccess = 'w'):
+def api_call(url, filename, write_to_file = 'yes', fileaccess = 'w'):
     '''
     Accepts a URL and returns the text
     '''
@@ -28,10 +28,10 @@ def api_call(url, filename, fileaccess = 'w'):
     #Write to a file for backup/review
     #TODO - Need a better way to write each API call as a separate file
     #Although this won't be necessary long term anyway. It's mainly for testing.
-    my_data = json.dumps(r_text, indent=4)
-    with open(f"{filename}.json", fileaccess) as f:
-        f.write(my_data)
-
+    if write_to_file == 'yes':
+        my_data = json.dumps(r_text, indent=4)
+        with open(f"{filename}.json", fileaccess) as f:
+            f.write(my_data)
     return r_text
 
 
@@ -91,20 +91,33 @@ def get_cases(host):
     A module can only return a maximum of 100 results. To circumvent that, an offset can be supplied which starts returning data from after the offset.
     The amount must be looped through in order to retrieve all the results.
     For instance if there are 250 cases, first 100 is retrieved, then another 100, and then 50.
+    A list is returned of each dictionary that was retrieved this way.
     '''
     num_cases = int(case_count(host))
+    case_list = []
     offset = 0
     if num_cases > 100:
         while num_cases > 100:
-            cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved' limit {offset}, 100;", "cases", "a")
+            cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved' limit {offset}, 100;", "cases", 'no')
+            case_list.append(cases['result'])
             offset += 100
             num_cases = num_cases - offset
             if num_cases <= 100:
                 break
     if num_cases <= 100:
-        cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved' limit {offset}, 100;", "cases", "a")
+        cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved' limit {offset}, 100;", "cases", "no")
+        case_list.append(cases['result'])
+    
+    #Combine the multiple lists of dictionaries into one list
+    #Before: [[{case1}, {case2}], [{case 101}, {case 102}]]
+    #After: [{case1}, {case2}, {case 101}, {case 102}]
+    full_case_list = []
+    for caselist in case_list:
+        full_case_list += caselist
 
-get_cases(host)
+    return full_case_list
+
+cases = get_cases(host)
 
 
 ##num_cases = case_count(host)
