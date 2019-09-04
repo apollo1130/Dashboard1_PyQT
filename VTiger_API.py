@@ -5,13 +5,10 @@
 #Return information about each of the modules within VTiger
 #url = f"{host}/listtypes?fieldTypeList=null"
 #
-#Query Case Module for cases that are not resolved or closed
-#url = f"{host}/query?query=Select * FROM Cases WHERE casestatus != 'closed' AND casestatus != 'resolved' limit 100,200;"
-#
 #Get information about a module's fields, Cases in this example
 #url = f"{host}/describe?elementType=Employees"
 
-import requests, json
+import requests, json, datetime
 
 username ='(USERNAME)'
 access_key = '(ACCESS KEY)'
@@ -22,9 +19,9 @@ def api_call(url, filename, write_to_file = 'yes', fileaccess = 'w'):
     Accepts a URL and returns the text
     '''
     r = requests.get(url, auth=(username, access_key))
-    print(f"The status code is: {r.status_code}")
+    #print(f"The status code is: {r.status_code}")
     r_text = json.loads(r.text)
-    print(f"Amount of {filename}: {len(r_text['result'])} \n")    
+    #print(f"Amount of {filename}: {len(r_text['result'])} \n")    
     #Write to a file for backup/review
     #TODO - Need a better way to write each API call as a separate file
     #Although this won't be necessary long term anyway. It's mainly for testing.
@@ -52,7 +49,6 @@ def user_dictionary(host):
     #Assigns a list of the first name, last name and User ID to the username
     for username in range(num_of_users): 
         user_dict[username_list[username]] = [user_list['result'][username]['first_name'], user_list['result'][username]['last_name'], user_list['result'][username]['id'], user_list['result'][username]['user_primary_group']]       
-
     return user_dict
 
 
@@ -72,8 +68,7 @@ def group_dictionary(host):
 
     #Assigns a list of the first name, last name and User ID to the username
     for groupname in range(num_of_groups): 
-        group_dict[groupname_list[groupname]] = group_list['result'][groupname]['id']
-        
+        group_dict[groupname_list[groupname]] = group_list['result'][groupname]['id']  
     return group_dict
 
 
@@ -83,10 +78,10 @@ def case_count(host):
     '''
     case_amount = api_call(f"{host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved';", "casecount")
     num_cases = case_amount['result'][0]['count']
-    print(f"The amount of Support Cases is: {num_cases}")
     return num_cases
 
-def get_cases(host):
+
+def get_all_open_cases(host):
     '''
     A module can only return a maximum of 100 results. To circumvent that, an offset can be supplied which starts returning data from after the offset.
     The amount must be looped through in order to retrieve all the results.
@@ -98,14 +93,14 @@ def get_cases(host):
     offset = 0
     if num_cases > 100:
         while num_cases > 100:
-            cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved' limit {offset}, 100;", "cases", 'no')
+            cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;", "cases", 'no')
             case_list.append(cases['result'])
             offset += 100
             num_cases = num_cases - offset
             if num_cases <= 100:
                 break
     if num_cases <= 100:
-        cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved' limit {offset}, 100;", "cases", "no")
+        cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;", "cases", 'no')
         case_list.append(cases['result'])
     
     #Combine the multiple lists of dictionaries into one list
@@ -114,16 +109,47 @@ def get_cases(host):
     full_case_list = []
     for caselist in case_list:
         full_case_list += caselist
-
     return full_case_list
 
-cases = get_cases(host)
+
+def get_today_closed_cases(host):
+    '''
+    Returns a list of all the cases that have been closed since the beginning of today.
+    '''
+    today_closed_case_list = []
+    today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
+    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;", "cases", 'no')
+    for case in cases['result']:
+        today_closed_case_list.append(case)
+    return today_closed_case_list
 
 
-##num_cases = case_count(host)
-##print("Number of Support Cases: ", num_cases)
+def get_today_open_cases(host):
+    '''
+    Returns a list of all the cases that have been closed since the beginning of today.
+    '''
+    today_open_case_list = []
+    today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
+    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{today}' limit 0, 100;", "cases", 'no')
+    for case in cases['result']:
+        today_open_case_list.append(case)
+    return today_open_case_list
 
-#group_dict = group_dictionary(host)
-#user_dict = user_dictionary(host)
-#for k, v in group_dict.items():
-#    print(f"{k}: {v}")  
+
+def print_stats(host):
+    '''
+    Prints the total number of open cases,
+    How many cases were open today,
+    How many cases were closed today.
+    '''
+    today_open_cases = len(get_today_open_cases(host))
+    today_closed_cases = len(get_today_closed_cases(host))
+    num_cases_total = case_count(host)
+
+    print("Total Number of Support Group Cases:", num_cases_total)
+    print("Today's Opened Cases:", today_open_cases)
+    print("Today's Closed Cases:", today_closed_cases)
+    print("Today's Kill Ratio is:", "{:.0%}".format(today_closed_cases / today_open_cases))
+
+
+print_stats(host)
