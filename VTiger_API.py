@@ -14,21 +14,14 @@ username ='(USERNAME)'
 access_key = '(ACCESS KEY)'
 host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
 
-def api_call(url, filename, write_to_file = 'yes', fileaccess = 'w'):
+
+def api_call(url):
     '''
     Accepts a URL and returns the text
     '''
     r = requests.get(url, auth=(username, access_key))
     #print(f"The status code is: {r.status_code}")
     r_text = json.loads(r.text)
-    #print(f"Amount of {filename}: {len(r_text['result'])} \n")    
-    #Write to a file for backup/review
-    #TODO - Need a better way to write each API call as a separate file
-    #Although this won't be necessary long term anyway. It's mainly for testing.
-    if write_to_file == 'yes':
-        my_data = json.dumps(r_text, indent=4)
-        with open(f"{filename}.json", fileaccess) as f:
-            f.write(my_data)
     return r_text
 
 
@@ -36,7 +29,7 @@ def user_dictionary(host):
     '''
     Accepts User List and returns a dictionary of the username, first, last and id
     '''
-    user_list = api_call(f"{host}/query?query=Select * FROM Users;", 'users')
+    user_list = api_call(f"{host}/query?query=Select * FROM Users;")
     
     num_of_users = len(user_list['result'])
     username_list = []
@@ -56,7 +49,7 @@ def group_dictionary(host):
     '''
     Accepts Group List and returns a dictionary of the Group Name and ID
     '''
-    group_list = api_call(f"{host}/query?query=Select * FROM Groups;", 'groups')
+    group_list = api_call(f"{host}/query?query=Select * FROM Groups;")
 
     num_of_groups = len(group_list['result'])
     groupname_list = []
@@ -76,7 +69,7 @@ def case_count(host):
     '''
     Get the amount of cases that aren't closed or resolved and are assigned to the 20x5 group and return the number as an int
     '''
-    case_amount = api_call(f"{host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved';", "casecount")
+    case_amount = api_call(f"{host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved';")
     num_cases = case_amount['result'][0]['count']
     return num_cases
 
@@ -93,14 +86,14 @@ def get_all_open_cases(host):
     offset = 0
     if num_cases > 100:
         while num_cases > 100:
-            cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;", "cases", 'no')
+            cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
             case_list.append(cases['result'])
             offset += 100
             num_cases = num_cases - offset
             if num_cases <= 100:
                 break
     if num_cases <= 100:
-        cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;", "cases", 'no')
+        cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
         case_list.append(cases['result'])
     
     #Combine the multiple lists of dictionaries into one list
@@ -118,7 +111,7 @@ def get_today_closed_cases(host):
     '''
     today_closed_case_list = []
     today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
-    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;", "cases", 'no')
+    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;")
     for case in cases['result']:
         today_closed_case_list.append(case)
     return today_closed_case_list
@@ -130,7 +123,7 @@ def get_today_open_cases(host):
     '''
     today_open_case_list = []
     today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
-    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{today}' limit 0, 100;", "cases", 'no')
+    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{today}' limit 0, 100;")
     for case in cases['result']:
         today_open_case_list.append(case)
     return today_open_case_list
@@ -146,7 +139,7 @@ def print_stats(host):
     today_closed_cases = len(get_today_closed_cases(host))
     num_cases_total = case_count(host)
 
-    print("Total Number of Support Group Cases:", num_cases_total)
+    print("Total Number of Open Support Group Cases:", num_cases_total)
     print("Today's Opened Cases:", today_open_cases)
     print("Today's Closed Cases:", today_closed_cases)
     print("Today's Kill Ratio is:", "{:.0%}".format(today_closed_cases / today_open_cases))
