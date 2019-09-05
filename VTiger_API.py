@@ -184,10 +184,6 @@ def print_stats(host):
     print("Total Cases closed this week:", len(weeks_closed_cases))
     print("This Week's Kill Ratio is:", "{:.0%}".format(len(weeks_closed_cases) / len(weeks_open_cases)))
     print()
-    print("Today's Opened Cases:", today_open_cases)
-    print("Today's Closed Cases:", len(today_closed_cases))
-    print("Today's Kill Ratio is:", "{:.0%}".format(len(today_closed_cases) / today_open_cases))
-    print()
 
     users = user_dictionary(host)
     #Each user_id with a starting amount of 0
@@ -199,11 +195,28 @@ def print_stats(host):
             id = case['assigned_user_id']
             newdict[id] += 1
     #Print each user's amount of closed cases this past week
+    print("Cases closed this week: ")
     for item in newdict:
         if newdict[item] > 0:
-            print(f"{users[item][0]} {users[item][1]} = {newdict[item]} cases closed this week.")
+            print(f"{users[item][0]} {users[item][1]}: {newdict[item]}")
+
+    print("\n\nToday's Opened Cases:", today_open_cases)
+    print("Today's Closed Cases:", len(today_closed_cases))
+    print("Today's Kill Ratio is:", "{:.0%}".format(len(today_closed_cases) / today_open_cases))
+    print()
+    print("Cases closed today: ")
+    newdict = {i:0 for i in users}
+
+    #Increment each user ID's value by 1 for each closed case
+    for case in today_closed_cases:
+        if case['assigned_user_id'] in newdict:
+            id = case['assigned_user_id']
+            newdict[id] += 1
+    #Print each user's amount of closed cases today
+    for item in newdict:
+        if newdict[item] > 0:
+            print(f"{users[item][0]} {users[item][1]}: {newdict[item]}")
+
 
 print_stats(host)
-
-
 
