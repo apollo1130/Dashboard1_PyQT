@@ -142,19 +142,68 @@ def beginning_of_week():
     return today
 
 
+def get_weeks_closed_cases(host):
+    '''
+    Returns a list of all the cases that have been closed since the beginning of today.
+    '''
+    week_closed_case_list = []
+    monday = beginning_of_week()
+    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{monday}' limit 0, 100;")
+    for case in cases['result']:
+        week_closed_case_list.append(case)
+    return week_closed_case_list
+
+def get_weeks_open_cases(host):
+    '''
+    Returns a list of all the cases that have been closed since the beginning of today.
+    '''
+    week_open_case_list = []
+    monday = beginning_of_week()
+    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{monday}' limit 0, 100;")
+    for case in cases['result']:
+        week_open_case_list.append(case)
+    return week_open_case_list
+
 def print_stats(host):
     '''
     Prints the total number of open cases,
     How many cases were open today,
-    How many cases were closed today.
+    How many cases were closed today,
+    How many cases each user closed this past week.
     '''
     today_open_cases = len(get_today_open_cases(host))
-    today_closed_cases = len(get_today_closed_cases(host))
+    today_closed_cases = get_today_closed_cases(host)
     num_cases_total = case_count(host)
+    weeks_closed_cases = get_weeks_closed_cases(host)
+    weeks_open_cases = get_weeks_open_cases(host)
+    
 
     print("Total Number of Open Support Group Cases:", num_cases_total)
+    print()
+    print("Total Cases opened this week:", len(weeks_open_cases))
+    print("Total Cases closed this week:", len(weeks_closed_cases))
+    print("This Week's Kill Ratio is:", "{:.0%}".format(len(weeks_closed_cases) / len(weeks_open_cases)))
+    print()
     print("Today's Opened Cases:", today_open_cases)
-    print("Today's Closed Cases:", today_closed_cases)
-    print("Today's Kill Ratio is:", "{:.0%}".format(today_closed_cases / today_open_cases))
+    print("Today's Closed Cases:", len(today_closed_cases))
+    print("Today's Kill Ratio is:", "{:.0%}".format(len(today_closed_cases) / today_open_cases))
+    print()
 
-   
+    users = user_dictionary(host)
+    #Each user_id with a starting amount of 0
+    newdict = {i:0 for i in users}
+
+    #Increment each user ID's value by 1 for each closed case
+    for case in weeks_closed_cases:
+        if case['assigned_user_id'] in newdict:
+            id = case['assigned_user_id']
+            newdict[id] += 1
+    #Print each user's amount of closed cases this past week
+    for item in newdict:
+        if newdict[item] > 0:
+            print(f"{users[item][0]} {users[item][1]} = {newdict[item]} cases closed this week.")
+
+print_stats(host)
+
+
+
