@@ -8,7 +8,7 @@
 #Get information about a module's fields, Cases in this example
 #url = f"{host}/describe?elementType=Employees"
 
-import requests, json, datetime
+import requests, json, datetime, collections
 
 username ='(USERNAME)'
 access_key = '(ACCESS KEY)'
@@ -166,10 +166,30 @@ def get_weeks_open_cases(host):
 
 def print_stats(host):
     '''
-    Prints the total number of open cases,
-    How many cases were open today,
-    How many cases were closed today,
-    How many cases each user closed this past week.
+    Outputs the following as an example:
+
+    Total Number of Open Support Group Cases: 131
+
+    Total Cases opened this week: 9
+    Total Cases closed this week: 24
+    This Week's Kill Ratio is: 267%
+
+    Cases closed this week: 
+    James Johnson: 8
+    Kurt Biscuit: 8
+    Allen Key: 7
+    Ariel Fishberg: 1
+
+
+    Today's Opened Cases: 3
+    Today's Closed Cases: 11
+    Today's Kill Ratio is: 367%
+
+    Cases closed today: 
+    Kurt Biscuit: 6
+    Allen Key: 3
+    James Johnson: 2
+    
     '''
     today_open_cases = len(get_today_open_cases(host))
     today_closed_cases = get_today_closed_cases(host)
@@ -194,11 +214,16 @@ def print_stats(host):
         if case['assigned_user_id'] in newdict:
             id = case['assigned_user_id']
             newdict[id] += 1
+
+    #Takes the Dict and sorts it as a list of tuples in descening order
+    sorted_dict = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
+
+    
     #Print each user's amount of closed cases this past week
     print("Cases closed this week: ")
-    for item in newdict:
-        if newdict[item] > 0:
-            print(f"{users[item][0]} {users[item][1]}: {newdict[item]}")
+    for item in range(len(sorted_dict)):
+        if sorted_dict[item][1] > 0:
+            print(f"{users[sorted_dict[item][0]][0]} {users[sorted_dict[item][0]][1]}: {sorted_dict[item][1]}")
 
     print("\n\nToday's Opened Cases:", today_open_cases)
     print("Today's Closed Cases:", len(today_closed_cases))
@@ -212,10 +237,14 @@ def print_stats(host):
         if case['assigned_user_id'] in newdict:
             id = case['assigned_user_id']
             newdict[id] += 1
+            
+    #Takes the Dict and sorts it as a list of tuples in descening order
+    sorted_dict = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
+    
     #Print each user's amount of closed cases today
-    for item in newdict:
-        if newdict[item] > 0:
-            print(f"{users[item][0]} {users[item][1]}: {newdict[item]}")
+    for item in range(len(sorted_dict)):
+        if sorted_dict[item][1] > 0:
+            print(f"{users[sorted_dict[item][0]][0]} {users[sorted_dict[item][0]][1]}: {sorted_dict[item][1]}")
 
 
 print_stats(host)
