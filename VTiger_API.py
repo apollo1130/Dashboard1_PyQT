@@ -34,14 +34,14 @@ def user_dictionary(host):
     num_of_users = len(user_list['result'])
     username_list = []
     for user in range(num_of_users):
-        username_list.append(user_list['result'][user]['user_name'])
+        username_list.append(user_list['result'][user]['id'])
         
     #Creates a dictionary with every username as the key and an empty list as the value
     user_dict = {i : [] for i in username_list}
 
     #Assigns a list of the first name, last name and User ID to the username
     for username in range(num_of_users): 
-        user_dict[username_list[username]] = [user_list['result'][username]['first_name'], user_list['result'][username]['last_name'], user_list['result'][username]['id'], user_list['result'][username]['user_primary_group']]       
+        user_dict[username_list[username]] = [user_list['result'][username]['first_name'], user_list['result'][username]['last_name'], user_list['result'][username]['user_name'], user_list['result'][username]['user_primary_group']]       
     return user_dict
 
 
@@ -129,6 +129,19 @@ def get_today_open_cases(host):
     return today_open_case_list
 
 
+def beginning_of_week():
+    '''
+    For whichever day of the week it is, this past Monday at 12:00am is returned.
+    Today = datetime.datetime(2019, 9, 5, 15, 31, 13, 134153)
+    Returns: 2019-09-02 00:00:00
+    '''
+    today = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    #0 = monday, 5 = Saturday, 6 = Sunday 
+    day = today.weekday()
+    today = today + datetime.timedelta(days = -day)   
+    return today
+
+
 def print_stats(host):
     '''
     Prints the total number of open cases,
@@ -144,5 +157,4 @@ def print_stats(host):
     print("Today's Closed Cases:", today_closed_cases)
     print("Today's Kill Ratio is:", "{:.0%}".format(today_closed_cases / today_open_cases))
 
-
-print_stats(host)
+   
