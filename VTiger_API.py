@@ -25,7 +25,7 @@ def api_call(url):
     return r_text
 
 
-def user_dictionary(host):    
+def get_users(host):    
     '''
     Accepts User List and returns a dictionary of the username, first, last and id
     '''
@@ -45,7 +45,7 @@ def user_dictionary(host):
     return user_dict
 
 
-def group_dictionary(host):    
+def get_groups(host):    
     '''
     Accepts Group List and returns a dictionary of the Group Name and ID
     '''
@@ -105,30 +105,6 @@ def get_all_open_cases(host):
     return full_case_list
 
 
-def get_today_closed_cases(host):
-    '''
-    Returns a list of all the cases that have been closed since the beginning of today.
-    '''
-    today_closed_case_list = []
-    today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
-    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;")
-    for case in cases['result']:
-        today_closed_case_list.append(case)
-    return today_closed_case_list
-
-
-def get_today_open_cases(host):
-    '''
-    Returns a list of all the cases that have been closed since the beginning of today.
-    '''
-    today_open_case_list = []
-    today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
-    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{today}' limit 0, 100;")
-    for case in cases['result']:
-        today_open_case_list.append(case)
-    return today_open_case_list
-
-
 def beginning_of_week():
     '''
     For whichever day of the week it is, this past Monday at 12:00am is returned.
@@ -163,6 +139,31 @@ def get_weeks_open_cases(host):
     for case in cases['result']:
         week_open_case_list.append(case)
     return week_open_case_list
+
+
+def get_today_closed_cases(host):
+    '''
+    Returns a list of all the cases that have been closed since the beginning of today.
+    '''
+    today_closed_case_list = []
+    today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
+    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;")
+    for case in cases['result']:
+        today_closed_case_list.append(case)
+    return today_closed_case_list
+
+
+def get_today_open_cases(host):
+    '''
+    Returns a list of all the cases that have been closed since the beginning of today.
+    '''
+    today_open_case_list = []
+    today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
+    cases = api_call(f"{host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{today}' limit 0, 100;")
+    for case in cases['result']:
+        today_open_case_list.append(case)
+    return today_open_case_list
+
 
 def print_stats(host):
     '''
@@ -205,7 +206,7 @@ def print_stats(host):
     print("This Week's Kill Ratio is:", "{:.0%}".format(len(weeks_closed_cases) / len(weeks_open_cases)))
     print()
 
-    users = user_dictionary(host)
+    users = get_users(host)
     #Each user_id with a starting amount of 0
     newdict = {i:0 for i in users}
 
