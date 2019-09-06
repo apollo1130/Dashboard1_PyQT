@@ -250,11 +250,3 @@ class Vtiger_api:
         for item in range(len(sorted_dict)):
             if sorted_dict[item][1] > 0:
                 print(f"{users[sorted_dict[item][0]][0]} {users[sorted_dict[item][0]][1]}: {sorted_dict[item][1]}")
-
-
-username ='(USERNAME)'
-access_key = '(ACCESS KEY)'
-host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
-
-vtigerapi = Vtiger_api(username, access_key, host)
-vtigerapi.print_stats()

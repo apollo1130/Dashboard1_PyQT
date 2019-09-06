@@ -3,9 +3,10 @@
 
 import sys, requests, json, time
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
+import VTiger_API
 
 #This .ui file is created by QTDesigner and then imported here.
-#Add new widgets via QTDesigner, save the ui file and then simply reference them here.
+#Add new widgets via QTDesigner, save the ui file and then reference them here.
 qtCreatorFile = "app_gui.ui"
  
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -16,6 +17,12 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
+        self.username ='(USERNAME)'
+        self.access_key = '(ACCESS KEY)'
+        self.host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
+        
+        self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
+
         #Print Silent Errors
         sys._excepthook = sys.excepthook 
         def exception_hook(exctype, value, traceback):
@@ -24,14 +31,10 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             sys.exit(1) 
         sys.excepthook = exception_hook
 
-        self.open_cases_plainTextEdit.setPlainText('135')
-        self.refresh_pushButton.clicked.connect(self.refresh_data)
+        self.manual_refresh_pushButton.clicked.connect(self.refresh_data)
 
     def refresh_data(self):
-        num = int(self.open_cases_plainTextEdit.toPlainText())
-        num += 1
-        self.open_cases_plainTextEdit.setPlainText(str(num))
-
+        self.vtigerapi.print_stats()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
