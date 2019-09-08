@@ -6,488 +6,349 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1006</width>
-    <height>874</height>
+    <width>938</width>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="total_open_cases_label">
-    <property name="geometry">
-     <rect>
-      <x>760</x>
-      <y>20</y>
-      <width>191</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Total Open Cases</string>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="total_open_cases_plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>760</x>
-      <y>70</y>
-      <width>181</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="manual_refresh_pushButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>140</y>
-      <width>101</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Manual Refresh</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="daily_open_cases_label">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>610</y>
-      <width>111</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Open Cases</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="daily_closed_cases_label">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>610</y>
-      <width>121</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Closed Cases</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="daily_kill_ratio_label">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>610</y>
-      <width>91</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Kill Ratio</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="daily_label">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>660</y>
-      <width>141</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>31</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>DAILY</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="week_label">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>380</y>
-      <width>131</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>31</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>WEEK</string>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="daily_open_cases_plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>670</y>
-      <width>131</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="daily_closed_cases_plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>670</y>
-      <width>131</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="daily_kill_ratio_plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>670</y>
-      <width>131</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="auto_refresh_checkBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>170</y>
-      <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Auto Refresh</string>
-    </property>
-   </widget>
-   <widget class="QProgressBar" name="auto_refresh_progressBar">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>200</y>
-      <width>118</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="value">
-     <number>24</number>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="quit_pushButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>101</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Quit</string>
-    </property>
-   </widget>
-   <widget class="Line" name="line">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>530</y>
-      <width>971</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="lineWidth">
-     <number>4</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="Line" name="line_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>230</y>
-      <width>971</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="lineWidth">
-     <number>4</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="daily_table">
-    <property name="geometry">
-     <rect>
-      <x>740</x>
-      <y>560</y>
-      <width>231</width>
-      <height>261</height>
-     </rect>
-    </property>
-    <column>
-     <property name="text">
-      <string>Name</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Close Count</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QLabel" name="week_open_cases_label">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>310</y>
-      <width>111</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Open Cases</string>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="week_open_cases_plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>370</y>
-      <width>131</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="week_closed_cases_label">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>310</y>
-      <width>121</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Closed Cases</string>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="week_closed_cases_plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>370</y>
-      <width>131</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="week_kill_ratio_label">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>310</y>
-      <width>91</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>15</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Kill Ratio</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="week_table">
-    <property name="geometry">
-     <rect>
-      <x>740</x>
-      <y>260</y>
-      <width>231</width>
-      <height>261</height>
-     </rect>
-    </property>
-    <column>
-     <property name="text">
-      <string>Name</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Close Count</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QPlainTextEdit" name="week_kill_ratio_plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>370</y>
-      <width>131</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="support_group_cases_label">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>0</y>
-      <width>451</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>31</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Support Group Cases</string>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="quit_pushButton">
+      <property name="text">
+       <string>Quit</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" rowspan="2" colspan="3">
+     <widget class="QLabel" name="support_group_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>31</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Support Group Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QLabel" name="total_open_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Total Open Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4" rowspan="4">
+     <widget class="QPlainTextEdit" name="total_open_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>65</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="manual_refresh_pushButton">
+      <property name="text">
+       <string>Manual Refresh</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QCheckBox" name="auto_refresh_checkBox">
+      <property name="text">
+       <string>Auto Refresh</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QProgressBar" name="auto_refresh_progressBar">
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="5">
+     <widget class="Line" name="line_2">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="lineWidth">
+       <number>4</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLabel" name="week_open_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Open Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QLabel" name="week_closed_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Closed Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="3">
+     <widget class="QLabel" name="week_kill_ratio_label">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Kill Ratio</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="4" rowspan="2">
+     <widget class="QTableWidget" name="week_table">
+      <column>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Close Count</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="week_label">
+      <property name="font">
+       <font>
+        <pointsize>31</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>WEEK</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QPlainTextEdit" name="week_open_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QPlainTextEdit" name="week_closed_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="3">
+     <widget class="QPlainTextEdit" name="week_kill_ratio_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0" colspan="5">
+     <widget class="Line" name="line">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="lineWidth">
+       <number>4</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0" rowspan="2">
+     <widget class="QLabel" name="daily_label">
+      <property name="font">
+       <font>
+        <pointsize>31</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>DAILY</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QLabel" name="daily_open_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Open Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="2">
+     <widget class="QLabel" name="daily_closed_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Closed Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="3">
+     <widget class="QLabel" name="daily_kill_ratio_label">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Kill Ratio</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="4" rowspan="2">
+     <widget class="QTableWidget" name="daily_table">
+      <column>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Close Count</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item row="10" column="1">
+     <widget class="QPlainTextEdit" name="today_open_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="2">
+     <widget class="QPlainTextEdit" name="today_closed_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="3">
+     <widget class="QPlainTextEdit" name="today_kill_ratio_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1006</width>
-     <height>21</height>
+     <width>938</width>
+     <height>23</height>
     </rect>
    </property>
   </widget>

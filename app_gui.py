@@ -31,10 +31,25 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             sys.exit(1) 
         sys.excepthook = exception_hook
 
-        self.manual_refresh_pushButton.clicked.connect(self.refresh_data)
+        self.manual_refresh_pushButton.clicked.connect(self.manual_refresh_data)
 
-    def refresh_data(self):
-        self.vtigerapi.print_stats()
+    def manual_refresh_data(self):
+        #Total Amount of Open Cases
+        case_count = self.vtigerapi.case_count()
+        self.total_open_cases_plainTextEdit.setPlainText(case_count)
+        
+        #Weeks open, closed and kill ratio
+        week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data()
+        self.week_open_cases_plainTextEdit.setPlainText(str(week_open_cases))
+        self.week_closed_cases_plainTextEdit.setPlainText(str(week_closed_cases))
+        self.week_kill_ratio_plainTextEdit.setPlainText(str(week_kill_ratio))
+
+        #Todays open, closed and kill ratio
+        today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data()
+        self.today_open_cases_plainTextEdit.setPlainText(str(today_open_cases))
+        self.today_closed_cases_plainTextEdit.setPlainText(str(today_closed_cases))
+        self.today_kill_ratio_plainTextEdit.setPlainText(str(today_kill_ratio))
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

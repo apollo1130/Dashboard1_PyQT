@@ -169,6 +169,30 @@ class Vtiger_api:
         return today_open_case_list
 
 
+    def get_weeks_case_data(self):
+        '''
+        Returns the amount of opened and closed cases for the week.
+        Also returns the weekly kill ratio.
+        '''
+        weeks_open_cases = len(self.get_weeks_open_cases())
+        weeks_closed_cases = len(self.get_weeks_closed_cases())
+        week_kill_ratio = "{:.0%}".format(weeks_closed_cases/ weeks_open_cases)
+
+        return weeks_open_cases, weeks_closed_cases, week_kill_ratio
+
+
+    def get_today_case_data(self):
+        '''
+        Returns the amount of opened and closed cases for today.
+        Also returns the daily kill ratio.
+        '''
+        today_open_cases = len(self.get_today_open_cases())
+        today_closed_cases = len(self.get_today_closed_cases())
+        today_kill_ratio = "{:.0%}".format(today_closed_cases/ today_open_cases)
+
+        return today_open_cases, today_closed_cases, today_kill_ratio
+
+
     def print_stats(self):
         '''
         Outputs the following as an example:
