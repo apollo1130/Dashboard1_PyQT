@@ -17,6 +17,13 @@ class Vtiger_api:
         self.access_key = access_key
         self.host = host
 
+        self.full_user_dict = {}
+
+        self.today_open_case_list = []
+        self.today_closed_case_list = []
+        self.week_open_case_list = []
+        self.week_closed_case_list = []
+        
 
     def api_call(self, url):
         '''
@@ -45,6 +52,8 @@ class Vtiger_api:
         #Assigns a list of the first name, last name and User ID to the username
         for username in range(num_of_users): 
             user_dict[username_list[username]] = [user_list['result'][username]['first_name'], user_list['result'][username]['last_name'], user_list['result'][username]['user_name'], user_list['result'][username]['user_primary_group']]       
+        
+        self.full_user_dict = user_dict
         return user_dict
 
 
@@ -125,48 +134,45 @@ class Vtiger_api:
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
-        week_closed_case_list = []
+
         monday = self.beginning_of_week()
         cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{monday}' limit 0, 100;")
         for case in cases['result']:
-            week_closed_case_list.append(case)
-        return week_closed_case_list
+            self.week_closed_case_list.append(case)
+        return self.week_closed_case_list
 
 
     def get_weeks_open_cases(self):
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
-        week_open_case_list = []
         monday = self.beginning_of_week()
         cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{monday}' limit 0, 100;")
         for case in cases['result']:
-            week_open_case_list.append(case)
-        return week_open_case_list
+            self.week_open_case_list.append(case)
+        return self.week_open_case_list
 
 
     def get_today_closed_cases(self):
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
-        today_closed_case_list = []
         today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
         cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;")
         for case in cases['result']:
-            today_closed_case_list.append(case)
-        return today_closed_case_list
+            self.today_closed_case_list.append(case)
+        return self.today_closed_case_list
 
 
     def get_today_open_cases(self):
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
-        today_open_case_list = []
         today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
         cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{today}' limit 0, 100;")
         for case in cases['result']:
-            today_open_case_list.append(case)
-        return today_open_case_list
+            self.today_open_case_list.append(case)
+        return self.today_open_case_list
 
 
     def get_weeks_case_data(self):
@@ -202,85 +208,44 @@ class Vtiger_api:
         
         return today_open_cases, today_closed_cases, today_kill_ratio
 
-
-    def print_stats(self):
+    def week_user_stats(self):
         '''
-        Outputs the following as an example:
-
-        Total Number of Open Support Group Cases: 131
-
-        Total Cases opened this week: 9
-        Total Cases closed this week: 24
-        This Week's Kill Ratio is: 267%
-
-        Cases closed this week: 
-        James Johnson: 8
-        Kurt Biscuit: 8
-        Allen Key: 7
-        Ariel Fishberg: 1
-
-
-        Today's Opened Cases: 3
-        Today's Closed Cases: 11
-        Today's Kill Ratio is: 367%
-
-        Cases closed today: 
-        Kurt Biscuit: 6
-        Allen Key: 3
-        James Johnson: 2
-        
+        Returns an ordered list of tuples with each user ID 
+        and the amount of cases they closed this week.
         '''
-        today_open_cases = len(self.get_today_open_cases())
-        today_closed_cases = self.get_today_closed_cases()
-        num_cases_total = self.case_count()
-        weeks_closed_cases = self.get_weeks_closed_cases()
-        weeks_open_cases = self.get_weeks_open_cases()
-        
-
-        print("Total Number of Open Support Group Cases:", num_cases_total)
-        print()
-        print("Total Cases opened this week:", len(weeks_open_cases))
-        print("Total Cases closed this week:", len(weeks_closed_cases))
-        print("This Week's Kill Ratio is:", "{:.0%}".format(len(weeks_closed_cases) / len(weeks_open_cases)))
-        print()
-
-        users = self.get_users()
+        if self.full_user_dict == {}:
+            self.get_users()
         #Each user_id with a starting amount of 0
-        newdict = {i:0 for i in users}
+        newdict = {i:0 for i in self.full_user_dict}
 
         #Increment each user ID's value by 1 for each closed case
-        for case in weeks_closed_cases:
+        for case in self.week_closed_case_list:
             if case['assigned_user_id'] in newdict:
                 id = case['assigned_user_id']
                 newdict[id] += 1
 
         #Takes the Dict and sorts it as a list of tuples in descening order
-        sorted_dict = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
+        sorted_user_list = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
 
-        
-        #Print each user's amount of closed cases this past week
-        print("Cases closed this week: ")
-        for item in range(len(sorted_dict)):
-            if sorted_dict[item][1] > 0:
-                print(f"{users[sorted_dict[item][0]][0]} {users[sorted_dict[item][0]][1]}: {sorted_dict[item][1]}")
+        return sorted_user_list
 
-        print("\n\nToday's Opened Cases:", today_open_cases)
-        print("Today's Closed Cases:", len(today_closed_cases))
-        print("Today's Kill Ratio is:", "{:.0%}".format(len(today_closed_cases) / today_open_cases))
-        print()
-        print("Cases closed today: ")
-        newdict = {i:0 for i in users}
+    def today_user_stats(self):
+        '''
+        Returns an ordered list of tuples with each user ID 
+        and the amount of cases they closed this week.
+        '''
+        if self.full_user_dict == {}:
+            self.get_users()
+        #Each user_id with a starting amount of 0
+        newdict = {i:0 for i in self.full_user_dict}
 
         #Increment each user ID's value by 1 for each closed case
-        for case in today_closed_cases:
+        for case in self.today_closed_case_list:
             if case['assigned_user_id'] in newdict:
                 id = case['assigned_user_id']
                 newdict[id] += 1
-                
+
         #Takes the Dict and sorts it as a list of tuples in descening order
-        sorted_dict = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
-        
-        #Print each user's amount of closed cases today
-        for item in range(len(sorted_dict)):
-            if sorted_dict[item][1] > 0:
-                print(f"{users[sorted_dict[item][0]][0]} {users[sorted_dict[item][0]][1]}: {sorted_dict[item][1]}")
+        sorted_user_list = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
+
+        return sorted_user_list

@@ -50,6 +50,20 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_closed_cases_plainTextEdit.setPlainText(str(today_closed_cases))
         self.today_kill_ratio_plainTextEdit.setPlainText(str(today_kill_ratio))
 
+        #Print each user's amount of closed cases this past week
+        user_list = self.vtigerapi.week_user_stats()
+        for item in range(len(user_list)):
+            if user_list[item][1] > 0:
+                print(f"{self.vtigerapi.full_user_dict[user_list[item][0]][0]} {self.vtigerapi.full_user_dict[user_list[item][0]][1]}: {user_list[item][1]}")
+
+        #Print each user's amount of closed cases today
+        user_list = self.vtigerapi.today_user_stats()
+        for item in range(len(user_list)):
+            if user_list[item][1] > 0:
+                print(f"{self.vtigerapi.full_user_dict[user_list[item][0]][0]} {self.vtigerapi.full_user_dict[user_list[item][0]][1]}: {user_list[item][1]}")
+
+
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
