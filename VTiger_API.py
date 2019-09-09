@@ -176,10 +176,15 @@ class Vtiger_api:
         '''
         weeks_open_cases = len(self.get_weeks_open_cases())
         weeks_closed_cases = len(self.get_weeks_closed_cases())
-        week_kill_ratio = "{:.0%}".format(weeks_closed_cases/ weeks_open_cases)
-
+        if weeks_open_cases == 0:
+            week_kill_ratio = str(weeks_closed_cases) + "00%"
+        elif weeks_closed_cases == 0:
+            week_kill_ratio = "0%"
+        else:
+            week_kill_ratio = "{:.0%}".format(weeks_closed_cases/ weeks_open_cases)
+        
         return weeks_open_cases, weeks_closed_cases, week_kill_ratio
-
+   
 
     def get_today_case_data(self):
         '''
@@ -188,8 +193,13 @@ class Vtiger_api:
         '''
         today_open_cases = len(self.get_today_open_cases())
         today_closed_cases = len(self.get_today_closed_cases())
-        today_kill_ratio = "{:.0%}".format(today_closed_cases/ today_open_cases)
-
+        if today_open_cases == 0:
+            today_kill_ratio = str(today_closed_cases) + "00%"
+        elif today_closed_cases == 0:
+            today_kill_ratio = "0%"
+        else:
+            today_kill_ratio = "{:.0%}".format(today_closed_cases / today_open_cases)
+        
         return today_open_cases, today_closed_cases, today_kill_ratio
 
 
