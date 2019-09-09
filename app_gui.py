@@ -20,8 +20,17 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.username ='(USERNAME)'
         self.access_key = '(ACCESS KEY)'
         self.host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
-        
+
         self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
+
+        self.week_table.setRowCount(1)
+        self.week_table.setCurrentCell(0,0)
+        self.week_row = self.week_table.currentRow()
+
+        self.today_table.setRowCount(1)
+        self.today_table.setCurrentCell(0,0)
+        self.today_row = self.today_table.currentRow()
+        
 
         #Print Silent Errors
         sys._excepthook = sys.excepthook 
@@ -50,19 +59,31 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_closed_cases_plainTextEdit.setPlainText(str(today_closed_cases))
         self.today_kill_ratio_plainTextEdit.setPlainText(str(today_kill_ratio))
 
-        #Print each user's amount of closed cases this past week
+        #Fill out the Week's User Table
         user_list = self.vtigerapi.week_user_stats()
         for item in range(len(user_list)):
             if user_list[item][1] > 0:
-                print(f"{self.vtigerapi.full_user_dict[user_list[item][0]][0]} {self.vtigerapi.full_user_dict[user_list[item][0]][1]}: {user_list[item][1]}")
+                self.week_table.setItem(self.week_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[user_list[item][0]][0]} {self.vtigerapi.full_user_dict[user_list[item][0]][1]}")))
+                self.week_table.setItem(self.week_row, 1, QtWidgets.QTableWidgetItem((f"{user_list[item][1]}")))
 
-        #Print each user's amount of closed cases today
+                row_amount = self.week_table.rowCount()
+                if self.week_row + 1 == row_amount:
+                    self.week_table.setRowCount(row_amount + 1) 
+                    self.week_row += 1
+        self.week_table.setRowCount(row_amount)
+        
+        #Fill out the Daily User Table
         user_list = self.vtigerapi.today_user_stats()
         for item in range(len(user_list)):
             if user_list[item][1] > 0:
-                print(f"{self.vtigerapi.full_user_dict[user_list[item][0]][0]} {self.vtigerapi.full_user_dict[user_list[item][0]][1]}: {user_list[item][1]}")
+                self.today_table.setItem(self.today_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[user_list[item][0]][0]} {self.vtigerapi.full_user_dict[user_list[item][0]][1]}")))
+                self.today_table.setItem(self.today_row, 1, QtWidgets.QTableWidgetItem((f"{user_list[item][1]}")))
 
-
+                row_amount = self.today_table.rowCount()
+                if self.today_row + 1 == row_amount:
+                    self.today_table.setRowCount(row_amount + 1) 
+                    self.today_row += 1
+        self.today_table.setRowCount(row_amount)
 
 
 if __name__ == "__main__":
