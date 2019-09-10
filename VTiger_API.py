@@ -137,6 +137,7 @@ class Vtiger_api:
 
         monday = self.beginning_of_week()
         cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{monday}' limit 0, 100;")
+        self.week_closed_case_list = []
         for case in cases['result']:
             self.week_closed_case_list.append(case)
         return self.week_closed_case_list
@@ -148,6 +149,7 @@ class Vtiger_api:
         '''
         monday = self.beginning_of_week()
         cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{monday}' limit 0, 100;")
+        self.week_open_case_list = []
         for case in cases['result']:
             self.week_open_case_list.append(case)
         return self.week_open_case_list
@@ -159,6 +161,7 @@ class Vtiger_api:
         '''
         today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
         cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;")
+        self.today_closed_case_list = []
         for case in cases['result']:
             self.today_closed_case_list.append(case)
         return self.today_closed_case_list
@@ -170,6 +173,7 @@ class Vtiger_api:
         '''
         today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
         cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{today}' limit 0, 100;")
+        self.today_open_case_list = []
         for case in cases['result']:
             self.today_open_case_list.append(case)
         return self.today_open_case_list
