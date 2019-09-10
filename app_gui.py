@@ -25,6 +25,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.manual_refresh_pushButton.clicked.connect(self.manual_refresh_data)
         self.auto_refresh_checkBox.clicked.connect(self.auto_refresh)
+        self.quit_pushButton.clicked.connect(self.close_the_program)
 
         self.week_table.setRowCount(1)
         self.week_table.setCurrentCell(0,0)
@@ -134,7 +135,8 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
                     counter = 0
                 if self.auto_refresh_checkBox.isChecked() == False:
                     break
-
+    def close_the_program(self):
+        self.close()
         
 
 
