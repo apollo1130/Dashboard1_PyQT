@@ -433,8 +433,8 @@
    <widget class="QPushButton" name="manual_refresh_pushButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
+      <x>450</x>
+      <y>190</y>
       <width>83</width>
       <height>23</height>
      </rect>
@@ -446,8 +446,8 @@
    <widget class="QCheckBox" name="auto_refresh_checkBox">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>40</y>
+      <x>130</x>
+      <y>160</y>
       <width>87</width>
       <height>17</height>
      </rect>
@@ -460,20 +460,20 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
-      <width>108</width>
+      <y>190</y>
+      <width>241</width>
       <height>21</height>
      </rect>
     </property>
     <property name="value">
-     <number>24</number>
+     <number>0</number>
     </property>
    </widget>
    <widget class="QLabel" name="support_group_cases_label">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>100</y>
+      <x>130</x>
+      <y>30</y>
       <width>432</width>
       <height>49</height>
      </rect>
@@ -487,6 +487,32 @@
     </property>
     <property name="text">
      <string>Support Group Cases</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="refresh_time_lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Refresh Time (Minutes)</string>
     </property>
    </widget>
   </widget>
