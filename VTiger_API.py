@@ -148,7 +148,8 @@ class Vtiger_api:
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
         monday = self.beginning_of_week()
-        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{monday}' limit 0, 100;")
+        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5'AND createdtime >= '{monday}' limit 0, 100;")
+
         self.week_open_case_list = []
         for case in cases['result']:
             self.week_open_case_list.append(case)
@@ -172,7 +173,8 @@ class Vtiger_api:
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
         today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
-        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' AND createdtime >= '{today}' limit 0, 100;")
+        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND createdtime >= '{today}' limit 0, 100;")
+
         self.today_open_case_list = []
         for case in cases['result']:
             self.today_open_case_list.append(case)
