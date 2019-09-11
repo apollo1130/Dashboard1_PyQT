@@ -5,6 +5,7 @@ import sys, requests, json, time
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import VTiger_API
 
+
 #This .ui file is created by QTDesigner and then imported here.
 #Add new widgets via QTDesigner, save the ui file and then reference them here.
 qtCreatorFile = "app_gui.ui"
