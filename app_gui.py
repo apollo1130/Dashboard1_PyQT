@@ -51,7 +51,6 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         the respective fields. It is used by the auto_refresh() function to do this 
         at regular intervals.
         '''
-        print('manual refresh data has been called')
         #Total Amount of Open Cases
         case_count = self.vtigerapi.case_count()
         self.total_open_cases_plainTextEdit.setPlainText(case_count)
@@ -69,6 +68,12 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_kill_ratio_plainTextEdit.setPlainText(str(today_kill_ratio))
 
         #Fill out the Week's User Table
+        #Clear the table contents first
+        self.week_table.clearContents()
+        self.week_table.setRowCount(1)
+        self.week_table.setCurrentCell(0,0)
+        self.week_row = 0
+
         user_list = self.vtigerapi.week_user_stats()
         for item in range(len(user_list)):
             if user_list[item][1] > 0:
@@ -82,6 +87,12 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.week_table.setRowCount(row_amount)
         
         #Fill out the Daily User Table
+        #Clear the table contents first
+        self.today_table.clearContents()
+        self.today_table.setRowCount(1)
+        self.today_table.setCurrentCell(0,0)
+        self.today_row = 0
+
         user_list = self.vtigerapi.today_user_stats()
         for item in range(len(user_list)):
             if user_list[item][1] > 0:
@@ -93,7 +104,6 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.today_table.setRowCount(row_amount + 1) 
                     self.today_row += 1
         self.today_table.setRowCount(row_amount)
-        print('manual refresh data has finished')
 
 
     def auto_refresh(self):
