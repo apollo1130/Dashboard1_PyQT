@@ -279,21 +279,21 @@
    <widget class="QLabel" name="daily_label">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>480</y>
-      <width>129</width>
+      <width>151</width>
       <height>49</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>31</pointsize>
+      <pointsize>29</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
     <property name="text">
-     <string>DAILY</string>
+     <string>TODAY</string>
     </property>
    </widget>
    <widget class="QLabel" name="daily_open_cases_label">
