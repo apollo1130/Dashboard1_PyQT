@@ -1,9 +1,40 @@
-#https://doc.qt.io/qtforpython/PySide2/QtWidgets/QTableWidget.html#
-#https://www.pythonforengineers.com/your-first-gui-app-with-python-and-pyqt/
+#https://www.learnpyqt.com/apps/simple-sales-tax-calculator/
 
 import sys, requests, json, time
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import uic, QtWidgets 
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+
 import VTiger_API
+
+class MyEmitter(QObject):
+    '''
+    Creates the custom signal for the Worker class.
+    '''
+    done = pyqtSignal(list)
+
+class Worker(QRunnable):
+    '''
+    Worker thread
+    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
+    This Worker class is used by self.threading_function to initiate self.gather_vtiger_data
+    and then returns the data gathered as a list. 
+    That list of data is then sent to self.manual_refresh_data to populate the GUI.
+    '''
+    done = pyqtSignal(list)
+    def __init__(self, fn,):
+        super(Worker, self).__init__()
+        self.fn = fn
+        self.emitter = MyEmitter()
+
+    @pyqtSlot(list)
+    def run(self):
+        '''
+        Initialise the runner function with passed function.
+        '''
+        mylist = self.fn()
+        self.emitter.done.emit(mylist)
 
 
 #This .ui file is created by QTDesigner and then imported here.
@@ -11,7 +42,7 @@ import VTiger_API
 qtCreatorFile = "app_gui.ui"
  
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
- 
+
 class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
@@ -24,7 +55,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
 
-        self.manual_refresh_pushButton.clicked.connect(self.manual_refresh_data)
+        self.manual_refresh_pushButton.clicked.connect(self.threading_function)
         self.auto_refresh_checkBox.clicked.connect(self.auto_refresh)
         self.quit_pushButton.clicked.connect(self.close_the_program)
 
@@ -34,7 +65,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.today_table.setRowCount(1)
         self.today_table.setCurrentCell(0,0)
-        self.today_row = self.today_table.currentRow()        
+        self.today_row = self.today_table.currentRow()   
+
+        self.threadpool = QThreadPool()
 
         #Print Silent Errors
         sys._excepthook = sys.excepthook 
@@ -45,24 +78,51 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         sys.excepthook = exception_hook
 
 
-    def manual_refresh_data(self):
+    def threading_function(self):
         '''
-        This function pulls all the data using the vtigerapi class and fills out
-        the respective fields. It is used by the auto_refresh() function to do this 
-        at regular intervals.
+        Uses the Worker class to push gathering the VTiger data into another thread.
+        The data returned from that function is sent to manual_refresh_data where
+        it auto populates the GUI.
         '''
-        #Total Amount of Open Cases
+        worker = Worker(self.gather_vtiger_data)
+        worker.emitter.done.connect(self.manual_refresh_data)
+        self.threadpool.start(worker)
+
+    def gather_vtiger_data(self):
+        '''
+        Gathers data from the VTiger API Class. 
+        Returns it all as a list which gets sent to self.manual_refresh_data.
+        '''
         case_count = self.vtigerapi.case_count()
+        week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data()
+        today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data()
+        week_user_list = self.vtigerapi.week_user_stats()
+        today_user_list = self.vtigerapi.today_user_stats()
+
+        return [case_count, week_open_cases, week_closed_cases, week_kill_ratio, today_open_cases, today_closed_cases, today_kill_ratio, week_user_list, today_user_list]
+
+
+    def manual_refresh_data(self, data_list):
+        '''
+        This function uses all the data supplied from gather_vtiger_data and fills out
+        the respective fields. This is all done in a separate thread so as to not freeze the GUI.
+        '''
+        case_count = data_list[0]
+        week_open_cases = data_list[1]
+        week_closed_cases = data_list[2]
+        week_kill_ratio = data_list[3]
+        today_open_cases = data_list[4]
+        today_closed_cases = data_list[5]
+        today_kill_ratio = data_list[6]
+        week_user_list = data_list[7]
+        today_user_list = data_list[8]
+
         self.total_open_cases_plainTextEdit.setPlainText(case_count)
         
-        #Weeks open, closed and kill ratio
-        week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data()
         self.week_open_cases_plainTextEdit.setPlainText(str(week_open_cases))
         self.week_closed_cases_plainTextEdit.setPlainText(str(week_closed_cases))
         self.week_kill_ratio_plainTextEdit.setPlainText(str(week_kill_ratio))
 
-        #Todays open, closed and kill ratio
-        today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data()
         self.today_open_cases_plainTextEdit.setPlainText(str(today_open_cases))
         self.today_closed_cases_plainTextEdit.setPlainText(str(today_closed_cases))
         self.today_kill_ratio_plainTextEdit.setPlainText(str(today_kill_ratio))
@@ -74,11 +134,10 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.week_table.setCurrentCell(0,0)
         self.week_row = 0
 
-        user_list = self.vtigerapi.week_user_stats()
-        for item in range(len(user_list)):
-            if user_list[item][1] > 0:
-                self.week_table.setItem(self.week_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[user_list[item][0]][0]} {self.vtigerapi.full_user_dict[user_list[item][0]][1]}")))
-                self.week_table.setItem(self.week_row, 1, QtWidgets.QTableWidgetItem((f"{user_list[item][1]}")))
+        for item in range(len(week_user_list)):
+            if week_user_list[item][1] > 0:
+                self.week_table.setItem(self.week_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[week_user_list[item][0]][0]} {self.vtigerapi.full_user_dict[week_user_list[item][0]][1]}")))
+                self.week_table.setItem(self.week_row, 1, QtWidgets.QTableWidgetItem((f"{week_user_list[item][1]}")))
 
                 row_amount = self.week_table.rowCount()
                 if self.week_row + 1 == row_amount:
@@ -93,22 +152,23 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_table.setCurrentCell(0,0)
         self.today_row = 0
 
-        user_list = self.vtigerapi.today_user_stats()
-        for item in range(len(user_list)):
-            if user_list[item][1] > 0:
-                self.today_table.setItem(self.today_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[user_list[item][0]][0]} {self.vtigerapi.full_user_dict[user_list[item][0]][1]}")))
-                self.today_table.setItem(self.today_row, 1, QtWidgets.QTableWidgetItem((f"{user_list[item][1]}")))
+        for item in range(len(today_user_list)):
+            if today_user_list[item][1] > 0:
+                self.today_table.setItem(self.today_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[today_user_list[item][0]][0]} {self.vtigerapi.full_user_dict[today_user_list[item][0]][1]}")))
+                self.today_table.setItem(self.today_row, 1, QtWidgets.QTableWidgetItem((f"{today_user_list[item][1]}")))
 
                 row_amount = self.today_table.rowCount()
                 if self.today_row + 1 == row_amount:
                     self.today_table.setRowCount(row_amount + 1) 
                     self.today_row += 1
         self.today_table.setRowCount(row_amount)
-
+    
+    def close_the_program(self):
+        pass
 
     def auto_refresh(self):
         '''
-        This function causes the manual_refresh_data() function to happen at regular intervals.
+        #This function causes the manual_refresh_data() function to happen at regular intervals.
         '''
         if self.refresh_time_lineEdit.text() == '':
             msg = QtWidgets.QMessageBox()
@@ -133,24 +193,12 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.auto_refresh_checkBox.setChecked(False)
 
         else:
-            #Thread Here for self.manual_refresh_data()
-            timer = int(self.refresh_time_lineEdit.text()) * 30
-            counter = 0
-
-            while True:
-                print(counter)
-                time.sleep(1)
-                counter += 1
-                if counter == timer:
-                    #Thread Here for self.manual_refresh_data()
-                    counter = 0
-                if self.auto_refresh_checkBox.isChecked() == False:
-                    break
-    def close_the_program(self):
-        self.close()
-        
-
-
+            #This doesn't work yet
+            self.timer.setInterval = int(self.refresh_time_lineEdit.text()) * 60 * 1000
+            print(self.timer.interval)
+            self.timer.start()
+        if self.auto_refresh_checkBox.isChecked() == False:
+            self.timer.stop()
 
 
 if __name__ == "__main__":
@@ -159,4 +207,3 @@ if __name__ == "__main__":
     window = vtiger_api_gui()
     window.show()
     sys.exit(app.exec_())
-
