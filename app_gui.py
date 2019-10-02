@@ -88,6 +88,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         worker.emitter.done.connect(self.manual_refresh_data)
         self.threadpool.start(worker)
 
+
     def gather_vtiger_data(self):
         '''
         Gathers data from the VTiger API Class. 
@@ -164,7 +165,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_table.setRowCount(row_amount)
     
     def close_the_program(self):
-        pass
+        self.close()
 
     def auto_refresh(self):
         '''
@@ -191,15 +192,34 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             msg.setIcon(QtWidgets.QMessageBox.Warning)
             msg.exec_()
             self.auto_refresh_checkBox.setChecked(False)
-
+        
         else:
-            #This doesn't work yet
-            self.timer.setInterval = int(self.refresh_time_lineEdit.text()) * 60 * 1000
-            print(self.timer.interval)
+            self.threading_function()
+            self.interval = int(self.refresh_time_lineEdit.text()) * 60 * 1000
+            self.auto_refresh_progressBar.setMaximum(self.interval)
+
+
+            self.progressbar_timer = QTimer()
+            self.progressbar_timer.setInterval(1000)
+            self.progressbar_timer.timeout.connect(self.progress_bar)
+            self.progressbar_timer.start()
+
+            self.timer = QTimer()
+            self.timer.setInterval(self.interval)
+            self.timer.timeout.connect(self.threading_function)
             self.timer.start()
         if self.auto_refresh_checkBox.isChecked() == False:
-            self.timer.stop()
+            try:
+                self.timer.stop()
+                self.progressbar_timer.stop()
+            except AttributeError:
+                pass
+            self.auto_refresh_progressBar.setValue(0)
 
+    def progress_bar(self):
+        time_left = self.interval - self.timer.remainingTime()
+        self.auto_refresh_progressBar.setValue(time_left)
+       
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
