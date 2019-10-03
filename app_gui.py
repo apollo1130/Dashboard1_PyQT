@@ -58,6 +58,8 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.manual_refresh_pushButton.clicked.connect(self.threading_function)
         self.auto_refresh_checkBox.clicked.connect(self.auto_refresh)
         self.quit_pushButton.clicked.connect(self.close_the_program)
+        self.plus_push_button.clicked.connect(self.increase_size)
+        self.minus_push_button.clicked.connect(self.decrease_size)
 
         self.week_table.setRowCount(1)
         self.week_table.setCurrentCell(0,0)
@@ -76,6 +78,27 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             sys._excepthook(exctype, value, traceback) 
             sys.exit(1) 
         sys.excepthook = exception_hook
+
+    def increase_size(self):
+        '''
+        Increase the font sizes of 
+        '''
+        self.total_open_cases_plainTextEdit.zoomIn(2)
+        self.week_open_cases_plainTextEdit.zoomIn(2)
+        self.week_closed_cases_plainTextEdit.zoomIn(2)
+        self.week_kill_ratio_plainTextEdit.zoomIn(2)
+        self.today_open_cases_plainTextEdit.zoomIn(2)
+        self.today_closed_cases_plainTextEdit.zoomIn(2)
+        self.today_kill_ratio_plainTextEdit.zoomIn(2)
+
+    def decrease_size(self):
+        self.total_open_cases_plainTextEdit.zoomOut(2)
+        self.week_open_cases_plainTextEdit.zoomOut(2)
+        self.week_closed_cases_plainTextEdit.zoomOut(2)
+        self.week_kill_ratio_plainTextEdit.zoomOut(2)
+        self.today_open_cases_plainTextEdit.zoomOut(2)
+        self.today_closed_cases_plainTextEdit.zoomOut(2)
+        self.today_kill_ratio_plainTextEdit.zoomOut(2)
 
 
     def threading_function(self):
