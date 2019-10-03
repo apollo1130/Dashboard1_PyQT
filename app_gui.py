@@ -79,27 +79,6 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             sys.exit(1) 
         sys.excepthook = exception_hook
 
-    def increase_size(self):
-        '''
-        Increase the font sizes of 
-        '''
-        self.total_open_cases_plainTextEdit.zoomIn(2)
-        self.week_open_cases_plainTextEdit.zoomIn(2)
-        self.week_closed_cases_plainTextEdit.zoomIn(2)
-        self.week_kill_ratio_plainTextEdit.zoomIn(2)
-        self.today_open_cases_plainTextEdit.zoomIn(2)
-        self.today_closed_cases_plainTextEdit.zoomIn(2)
-        self.today_kill_ratio_plainTextEdit.zoomIn(2)
-
-    def decrease_size(self):
-        self.total_open_cases_plainTextEdit.zoomOut(2)
-        self.week_open_cases_plainTextEdit.zoomOut(2)
-        self.week_closed_cases_plainTextEdit.zoomOut(2)
-        self.week_kill_ratio_plainTextEdit.zoomOut(2)
-        self.today_open_cases_plainTextEdit.zoomOut(2)
-        self.today_closed_cases_plainTextEdit.zoomOut(2)
-        self.today_kill_ratio_plainTextEdit.zoomOut(2)
-
 
     def threading_function(self):
         '''
@@ -186,9 +165,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.today_table.setRowCount(row_amount + 1) 
                     self.today_row += 1
         self.today_table.setRowCount(row_amount)
-    
-    def close_the_program(self):
-        self.close()
+
 
     def auto_refresh(self):
         '''
@@ -243,6 +220,32 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         time_left = self.interval - self.timer.remainingTime()
         self.auto_refresh_progressBar.setValue(time_left)
        
+    def increase_size(self):
+        '''
+        Increase the font sizes of the plain text edit widgets.
+        '''
+        self.total_open_cases_plainTextEdit.zoomIn(2)
+        self.week_open_cases_plainTextEdit.zoomIn(2)
+        self.week_closed_cases_plainTextEdit.zoomIn(2)
+        self.week_kill_ratio_plainTextEdit.zoomIn(2)
+        self.today_open_cases_plainTextEdit.zoomIn(2)
+        self.today_closed_cases_plainTextEdit.zoomIn(2)
+        self.today_kill_ratio_plainTextEdit.zoomIn(2)
+
+    def decrease_size(self):
+        '''
+        Decrease the font sizes of the plain text edit widgets.
+        '''
+        self.total_open_cases_plainTextEdit.zoomOut(2)
+        self.week_open_cases_plainTextEdit.zoomOut(2)
+        self.week_closed_cases_plainTextEdit.zoomOut(2)
+        self.week_kill_ratio_plainTextEdit.zoomOut(2)
+        self.today_open_cases_plainTextEdit.zoomOut(2)
+        self.today_closed_cases_plainTextEdit.zoomOut(2)
+        self.today_kill_ratio_plainTextEdit.zoomOut(2)
+
+    def close_the_program(self):
+        self.close()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
