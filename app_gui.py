@@ -136,13 +136,14 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.week_table.setRowCount(1)
         self.week_table.setCurrentCell(0,0)
         self.week_row = 0
+        
+        row_amount = self.week_table.rowCount()
 
         for item in range(len(week_user_list)):
             if week_user_list[item][1] > 0:
                 self.week_table.setItem(self.week_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[week_user_list[item][0]][0]} {self.vtigerapi.full_user_dict[week_user_list[item][0]][1]}")))
                 self.week_table.setItem(self.week_row, 1, QtWidgets.QTableWidgetItem((f"{week_user_list[item][1]}")))
 
-                row_amount = self.week_table.rowCount()
                 if self.week_row + 1 == row_amount:
                     self.week_table.setRowCount(row_amount + 1) 
                     self.week_row += 1
