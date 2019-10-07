@@ -156,12 +156,13 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_table.setCurrentCell(0,0)
         self.today_row = 0
 
+        row_amount = self.today_table.rowCount()
+
         for item in range(len(today_user_list)):
             if today_user_list[item][1] > 0:
                 self.today_table.setItem(self.today_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[today_user_list[item][0]][0]} {self.vtigerapi.full_user_dict[today_user_list[item][0]][1]}")))
                 self.today_table.setItem(self.today_row, 1, QtWidgets.QTableWidgetItem((f"{today_user_list[item][1]}")))
 
-                row_amount = self.today_table.rowCount()
                 if self.today_row + 1 == row_amount:
                     self.today_table.setRowCount(row_amount + 1) 
                     self.today_row += 1
