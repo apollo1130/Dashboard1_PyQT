@@ -137,17 +137,17 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.week_table.setCurrentCell(0,0)
         self.week_row = 0
         
-        row_amount = self.week_table.rowCount()
 
         for item in range(len(week_user_list)):
             if week_user_list[item][1] > 0:
                 self.week_table.setItem(self.week_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[week_user_list[item][0]][0]} {self.vtigerapi.full_user_dict[week_user_list[item][0]][1]}")))
                 self.week_table.setItem(self.week_row, 1, QtWidgets.QTableWidgetItem((f"{week_user_list[item][1]}")))
-
+                        
+                row_amount = self.week_table.rowCount()
                 if self.week_row + 1 == row_amount:
                     self.week_table.setRowCount(row_amount + 1) 
                     self.week_row += 1
-        self.week_table.setRowCount(row_amount)
+        self.week_table.setRowCount(self.week_table.rowCount() - 1)
         
         #Fill out the Daily User Table
         #Clear the table contents first
@@ -156,17 +156,17 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_table.setCurrentCell(0,0)
         self.today_row = 0
 
-        row_amount = self.today_table.rowCount()
 
         for item in range(len(today_user_list)):
             if today_user_list[item][1] > 0:
                 self.today_table.setItem(self.today_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[today_user_list[item][0]][0]} {self.vtigerapi.full_user_dict[today_user_list[item][0]][1]}")))
                 self.today_table.setItem(self.today_row, 1, QtWidgets.QTableWidgetItem((f"{today_user_list[item][1]}")))
-
+                
+                row_amount = self.today_table.rowCount()
                 if self.today_row + 1 == row_amount:
                     self.today_table.setRowCount(row_amount + 1) 
                     self.today_row += 1
-        self.today_table.setRowCount(row_amount)
+        self.today_table.setRowCount(self.today_table.rowCount() - 1)
 
 
     def auto_refresh(self):
