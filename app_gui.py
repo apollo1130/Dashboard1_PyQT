@@ -187,14 +187,14 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             msg.setIcon(QtWidgets.QMessageBox.Warning)
             msg.exec_()
             self.auto_refresh_checkBox.setChecked(False)
-        elif int(self.refresh_time_lineEdit.text()) < 1: 
+        elif int(self.refresh_time_lineEdit.text()) <= 1: 
             msg = QtWidgets.QMessageBox()
             msg.setText("Auto refresh time may not be less than 1.\nSelect a refresh time in minutes.")
             msg.setWindowTitle("Warning!")
             msg.setIcon(QtWidgets.QMessageBox.Warning)
             msg.exec_()
             self.auto_refresh_checkBox.setChecked(False)
-        
+
         else:
             self.threading_function()
             self.interval = int(self.refresh_time_lineEdit.text()) * 60 * 1000
@@ -219,6 +219,15 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.auto_refresh_progressBar.setValue(0)
 
     def progress_bar(self):
+        '''
+        Update the progress bar
+        '''
+        #VTiger only allows 60 api calls per minutes.
+        #If there are no more allowed API requests, the program crashes. 
+        #As a solution, the program is paused for however long remaining
+        #until the 60 api call per minute is reset.
+        time.sleep(self.vtigerapi.seconds_to_wait)
+
         time_left = self.interval - self.timer.remainingTime()
         self.auto_refresh_progressBar.setValue(time_left)
        

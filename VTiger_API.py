@@ -8,7 +8,7 @@
 #Get information about a module's fields, Cases in this example
 #url = f"{host}/describe?elementType=Employees"
 
-import requests, json, datetime, collections
+import requests, json, datetime, collections, time
 
 class Vtiger_api:
     def __init__(self, username, access_key, host):
@@ -23,6 +23,8 @@ class Vtiger_api:
         self.today_closed_case_list = []
         self.week_open_case_list = []
         self.week_closed_case_list = []
+
+        self.seconds_to_wait = 0
         
 
     def api_call(self, url):
@@ -30,7 +32,15 @@ class Vtiger_api:
         Accepts a URL and returns the text
         '''
         r = requests.get(url, auth=(self.username, self.access_key))
-        #print(f"The status code is: {r.status_code}")
+        header_dict = r.headers
+
+        #We're only allowed 60 API requests per minute. 
+        #When we are close to reaching this limit,
+        #We pause for the remaining time until it resets.
+        if int(header_dict['X-FloodControl-Remaining']) <= 5:
+            self.seconds_to_wait = abs(int(header_dict['X-FloodControl-Reset']) - int(time.time()))
+            time.sleep(self.seconds_to_wait)
+            self.seconds_to_wait = 0
         r_text = json.loads(r.text)
         return r_text
 

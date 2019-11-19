@@ -26,7 +26,7 @@
      <widget class="QPlainTextEdit" name="week_kill_ratio_plainTextEdit">
       <property name="font">
        <font>
-        <pointsize>65</pointsize>
+        <pointsize>55</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -142,7 +142,7 @@
      <widget class="QPlainTextEdit" name="today_open_cases_plainTextEdit">
       <property name="font">
        <font>
-        <pointsize>75</pointsize>
+        <pointsize>65</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -222,7 +222,7 @@
      <widget class="QPlainTextEdit" name="today_closed_cases_plainTextEdit">
       <property name="font">
        <font>
-        <pointsize>75</pointsize>
+        <pointsize>65</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -314,7 +314,7 @@
      <widget class="QPlainTextEdit" name="week_closed_cases_plainTextEdit">
       <property name="font">
        <font>
-        <pointsize>75</pointsize>
+        <pointsize>65</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -348,7 +348,7 @@
      <widget class="QPlainTextEdit" name="today_kill_ratio_plainTextEdit">
       <property name="font">
        <font>
-        <pointsize>65</pointsize>
+        <pointsize>55</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -376,7 +376,7 @@
      <widget class="QPlainTextEdit" name="week_open_cases_plainTextEdit">
       <property name="font">
        <font>
-        <pointsize>75</pointsize>
+        <pointsize>65</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
