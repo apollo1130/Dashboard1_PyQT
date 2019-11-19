@@ -49,9 +49,17 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
-        self.username ='(USERNAME)'
-        self.access_key = '(ACCESS KEY)'
-        self.host = 'https://(MYURL).vtiger.com/restapi/v1/vtiger/default'
+        #Credentials are stored in a separate file with this format:
+        #{"username":"(USERNAME)",
+        #"access_key":"(ACCESS KEY)",
+        #"host":"https://(MYURL).vtiger.com/restapi/v1/vtiger/default"}
+        with open('credentials.json') as f:
+            data = f.read()
+        self.credential_dict = json.loads(data)
+
+        self.username =self.credential_dict['username']
+        self.access_key = self.credential_dict['access_key']
+        self.host = self.credential_dict['host']
 
         self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
 
