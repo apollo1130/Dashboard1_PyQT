@@ -139,6 +139,15 @@ class Vtiger_api:
         today = today + datetime.timedelta(days = -day)   
         return today
 
+    def beginning_of_month(self):
+        '''
+        For whichever day of the month it is, the first day of the month is returned.
+        Today = 2019-11-25 17:50:53.445677
+        Returns: 2019-11-01 00:00:00
+        '''
+        first_of_month = datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        return first_of_month
+
 
     def get_weeks_closed_cases(self, group_id):
         '''
