@@ -64,7 +64,6 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.accesskey_lineEdit.textChanged.connect(self.enable_export)
         self.host_lineEdit.textChanged.connect(self.enable_export)
 
-
         self.export_credentials_pushbutton.clicked.connect(self.export_credentials)
 
         self.test_connection_pushButton.clicked.connect(self.test_connection)
@@ -113,6 +112,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         if self.username_lineEdit.text() != '' and self.accesskey_lineEdit.text() != '' and self.host_lineEdit.text() != '':
             self.export_credentials_pushbutton.setEnabled(True)
+        self.username = self.username_lineEdit.text()
+        self.password = self.accesskey_lineEdit.text()
+        self.host = self.host_lineEdit.text()
 
     def export_credentials(self):
         '''
@@ -127,7 +129,28 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def test_connection(self):
-        self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
+        '''
+        Tests the credentials' ability to connect to VTiger
+        '''
+        try:
+            self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
+            data = self.vtigerapi.api_call(f"{self.host}/me")
+            first_name = data['result']['first_name']
+            last_name = data['result']['last_name']
+
+            msg = QtWidgets.QMessageBox()
+            msg.setText(f"Hi {first_name} {last_name},\nConnection Successful!\nClick \"Choose Group\" to get started.")
+            msg.setWindowTitle("Success!")
+            msg.setIcon(QtWidgets.QMessageBox.Information)
+            msg.exec_()
+            self.choose_group_pushButton.setEnabled(True)
+        except:
+            msg = QtWidgets.QMessageBox()
+            msg.setText("Connection was not successful.\nCheck your credentials and your internet connection and try again!")
+            msg.setWindowTitle("Connection Failure!")
+            msg.setIcon(QtWidgets.QMessageBox.Information)
+            msg.exec_()
+
 
     def choose_group(self):
         '''
