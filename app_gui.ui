@@ -15,18 +15,35 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="3" column="6">
-     <widget class="QPushButton" name="plus_push_button">
+    <item row="16" column="5">
+     <widget class="QLabel" name="daily_closed_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>+ Increase Font</string>
+       <string>Closed Cases</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="6">
-     <widget class="QPlainTextEdit" name="week_kill_ratio_plainTextEdit">
+    <item row="13" column="6">
+     <widget class="QLabel" name="week_kill_ratio_label">
       <property name="font">
        <font>
-        <pointsize>55</pointsize>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Kill Rate</string>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="2" colspan="3">
+     <widget class="QPlainTextEdit" name="week_open_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>65</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -39,132 +56,24 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0" colspan="8">
-     <widget class="Line" name="line_2">
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="lineWidth">
-       <number>4</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0" colspan="3">
-     <widget class="QProgressBar" name="auto_refresh_progressBar">
-      <property name="value">
-       <number>0</number>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="6">
-     <widget class="QPushButton" name="minus_push_button">
+    <item row="3" column="5">
+     <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>- Decrease Font</string>
+       <string>VTiger Access Key</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
-    <item row="10" column="0" colspan="2">
-     <widget class="QLabel" name="daily_label">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
+    <item row="9" column="0">
+     <widget class="QLineEdit" name="refresh_time_lineEdit">
       <property name="text">
-       <string>TODAY</string>
+       <string>5</string>
       </property>
      </widget>
     </item>
-    <item row="9" column="7" rowspan="2">
-     <widget class="QTableWidget" name="today_table">
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
-      </property>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>160</number>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>Name</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Close Count</string>
-       </property>
-      </column>
-     </widget>
-    </item>
-    <item row="6" column="6">
-     <widget class="QLabel" name="week_kill_ratio_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Kill Rate</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QCheckBox" name="auto_refresh_checkBox">
-      <property name="text">
-       <string>Auto Refresh</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="3">
-     <widget class="QPushButton" name="manual_refresh_pushButton">
-      <property name="text">
-       <string>Manual Refresh</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="2" colspan="3">
-     <widget class="QPlainTextEdit" name="today_open_cases_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>65</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="2" colspan="2">
-     <widget class="QLabel" name="week_open_cases_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Open Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="0" colspan="2">
+    <item row="14" column="0" colspan="2">
      <widget class="QLabel" name="week_label">
       <property name="font">
        <font>
@@ -178,48 +87,55 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QLineEdit" name="refresh_time_lineEdit">
-      <property name="text">
-       <string>5</string>
+    <item row="10" column="0" colspan="3">
+     <widget class="QProgressBar" name="auto_refresh_progressBar">
+      <property name="value">
+       <number>0</number>
       </property>
      </widget>
     </item>
-    <item row="9" column="5">
-     <widget class="QLabel" name="daily_closed_cases_label">
+    <item row="10" column="6">
+     <widget class="QPushButton" name="minus_push_button">
+      <property name="text">
+       <string>- Decrease Font</string>
+      </property>
+     </widget>
+    </item>
+    <item row="17" column="6">
+     <widget class="QPlainTextEdit" name="today_kill_ratio_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>55</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="2" colspan="2">
+     <widget class="QLabel" name="daily_open_cases_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>Closed Cases</string>
+       <string>Open Cases</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="4">
-     <widget class="QPushButton" name="quit_pushButton">
+    <item row="10" column="3">
+     <widget class="QPushButton" name="manual_refresh_pushButton">
       <property name="text">
-       <string>Quit</string>
+       <string>Manual Refresh</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="7">
-     <widget class="QLabel" name="total_open_cases_label">
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Total Open Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="5">
-     <widget class="QPlainTextEdit" name="today_closed_cases_plainTextEdit">
+    <item row="17" column="2" colspan="3">
+     <widget class="QPlainTextEdit" name="today_open_cases_plainTextEdit">
       <property name="font">
        <font>
         <pointsize>65</pointsize>
@@ -232,31 +148,7 @@
       </property>
      </widget>
     </item>
-    <item row="9" column="2" colspan="2">
-     <widget class="QLabel" name="daily_open_cases_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Open Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="6">
-     <widget class="QLabel" name="daily_kill_ratio_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Kill Rate</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="7" rowspan="2">
+    <item row="13" column="7" rowspan="2">
      <widget class="QTableWidget" name="week_table">
       <property name="font">
        <font>
@@ -281,19 +173,95 @@
       </column>
      </widget>
     </item>
-    <item row="6" column="5">
-     <widget class="QLabel" name="week_closed_cases_label">
+    <item row="0" column="3" rowspan="2" colspan="4">
+     <widget class="QLabel" name="support_group_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Support Group Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="17" column="0" colspan="2">
+     <widget class="QLabel" name="daily_label">
+      <property name="font">
+       <font>
+        <pointsize>40</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>TODAY</string>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="6">
+     <widget class="QPlainTextEdit" name="week_kill_ratio_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>55</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="5">
+     <widget class="QPushButton" name="import_credentials_pushbutton">
+      <property name="text">
+       <string>Import Credentials</string>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="6">
+     <widget class="QLabel" name="daily_kill_ratio_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>Closed Cases</string>
+       <string>Kill Rate</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="7" rowspan="4">
+    <item row="17" column="5">
+     <widget class="QPlainTextEdit" name="today_closed_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>65</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="5">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>VTiger Host</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="7" rowspan="10">
      <widget class="QPlainTextEdit" name="total_open_cases_plainTextEdit">
       <property name="font">
        <font>
@@ -310,7 +278,114 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="5">
+    <item row="16" column="7" rowspan="2">
+     <widget class="QTableWidget" name="today_table">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>160</number>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Close Count</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QCheckBox" name="auto_refresh_checkBox">
+      <property name="text">
+       <string>Auto Refresh</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="5">
+     <widget class="QLabel" name="week_closed_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Closed Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="7">
+     <widget class="QLabel" name="total_open_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Total Open Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Refresh Time (Minutes)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="6">
+     <widget class="QLineEdit" name="host_lineEdit"/>
+    </item>
+    <item row="13" column="2" colspan="2">
+     <widget class="QLabel" name="week_open_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Open Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="4">
+     <widget class="QPushButton" name="quit_pushButton">
+      <property name="text">
+       <string>Quit</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="0" colspan="8">
+     <widget class="Line" name="line_2">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="lineWidth">
+       <number>4</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="5">
      <widget class="QPlainTextEdit" name="week_closed_cases_plainTextEdit">
       <property name="font">
        <font>
@@ -327,7 +402,38 @@
       </property>
      </widget>
     </item>
-    <item row="8" column="0" colspan="8">
+    <item row="3" column="6">
+     <widget class="QLineEdit" name="accesskey_lineEdit">
+      <property name="echoMode">
+       <enum>QLineEdit::PasswordEchoOnEdit</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="5">
+     <widget class="QPushButton" name="plus_push_button">
+      <property name="text">
+       <string>+ Increase Font</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>VTiger Username</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="6">
+     <widget class="QPushButton" name="export_credentials_pushbutton">
+      <property name="text">
+       <string>Export Credentials</string>
+      </property>
+     </widget>
+    </item>
+    <item row="15" column="0" colspan="8">
      <widget class="Line" name="line">
       <property name="font">
        <font>
@@ -344,57 +450,18 @@
       </property>
      </widget>
     </item>
-    <item row="10" column="6">
-     <widget class="QPlainTextEdit" name="today_kill_ratio_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>55</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
+    <item row="2" column="6">
+     <widget class="QLineEdit" name="username_lineEdit"/>
     </item>
-    <item row="0" column="3" rowspan="2" colspan="4">
-     <widget class="QLabel" name="support_group_cases_label">
-      <property name="font">
-       <font>
-        <pointsize>45</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
+    <item row="5" column="6">
+     <widget class="QPushButton" name="choose_group_pushButton">
       <property name="text">
-       <string>Support Group Cases</string>
+       <string>Choose Group</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="2" colspan="3">
-     <widget class="QPlainTextEdit" name="week_open_cases_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>65</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="plainText">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0" colspan="2">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Refresh Time (Minutes)</string>
-      </property>
-     </widget>
+    <item row="7" column="6">
+     <widget class="QListWidget" name="group_listWidget"/>
     </item>
    </layout>
   </widget>

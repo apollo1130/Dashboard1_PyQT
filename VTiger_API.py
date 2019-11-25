@@ -265,3 +265,12 @@ class Vtiger_api:
         sorted_user_list = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
 
         return sorted_user_list
+
+if __name__ == '__main__':
+        with open('credentials.json') as f:
+            data = f.read()
+        credential_dict = json.loads(data)
+        vtigerapi = Vtiger_api(credential_dict['username'], credential_dict['access_key'], credential_dict['host'])
+        groups = vtigerapi.get_groups()
+        print(groups)
+

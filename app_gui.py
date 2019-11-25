@@ -69,6 +69,8 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.plus_push_button.clicked.connect(self.increase_size)
         self.minus_push_button.clicked.connect(self.decrease_size)
 
+        self.choose_group_pushButton.clicked.connect(self.choose_group)
+
         self.week_table.setRowCount(1)
         self.week_table.setCurrentCell(0,0)
         self.week_row = self.week_table.currentRow()
@@ -86,6 +88,19 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             sys._excepthook(exctype, value, traceback) 
             sys.exit(1) 
         sys.excepthook = exception_hook
+
+
+    def choose_group(self):
+        '''
+        Populates the group list widget with all VTiger groups
+        '''
+        group_list = []
+        self.groups = self.vtigerapi.get_groups()
+        for groupname in self.groups:
+            group_list.append(groupname)
+        self.group_listWidget.addItems(group_list)
+
+
 
 
     def threading_function(self):
