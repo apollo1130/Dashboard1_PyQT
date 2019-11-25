@@ -49,20 +49,6 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
-        #Credentials are stored in a separate file with this format:
-        #{"username":"(USERNAME)",
-        #"access_key":"(ACCESS KEY)",
-        #"host":"https://(MYURL).vtiger.com/restapi/v1/vtiger/default"}
-        with open('credentials.json') as f:
-            data = f.read()
-        self.credential_dict = json.loads(data)
-
-        self.username =self.credential_dict['username']
-        self.access_key = self.credential_dict['access_key']
-        self.host = self.credential_dict['host']
-
-        self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
-
         self.manual_refresh_pushButton.clicked.connect(self.threading_function)
         self.auto_refresh_checkBox.clicked.connect(self.auto_refresh)
         self.quit_pushButton.clicked.connect(self.close_the_program)
@@ -71,6 +57,17 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.choose_group_pushButton.clicked.connect(self.choose_group)
         self.group_listWidget.itemClicked.connect(self.set_primary_group)
+
+        self.import_credentials_pushbutton.clicked.connect(self.import_credentials)
+        
+        self.username_lineEdit.textChanged.connect(self.enable_export)
+        self.accesskey_lineEdit.textChanged.connect(self.enable_export)
+        self.host_lineEdit.textChanged.connect(self.enable_export)
+
+
+        self.export_credentials_pushbutton.clicked.connect(self.export_credentials)
+
+        self.test_connection_pushButton.clicked.connect(self.test_connection)
 
         self.week_table.setRowCount(1)
         self.week_table.setCurrentCell(0,0)
@@ -91,6 +88,46 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             sys.exit(1) 
         sys.excepthook = exception_hook
 
+    def import_credentials(self):
+        '''
+        Credentials are stored in a separate file with this format:
+        {"username":"(USERNAME)",
+        "access_key":"(ACCESS KEY)",
+        "host":"https://(MYURL).vtiger.com/restapi/v1/vtiger/default"}
+        '''
+        with open('credentials.json') as f:
+            data = f.read()
+        credential_dict = json.loads(data)
+
+        self.username_lineEdit.setText(credential_dict['username'])
+        self.accesskey_lineEdit.setText(credential_dict['access_key'])
+        self.host_lineEdit.setText(credential_dict['host'])
+        self.username =credential_dict['username']
+        self.access_key = credential_dict['access_key']
+        self.host = credential_dict['host']
+
+
+    def enable_export(self):
+        '''
+        Enables the export credentials button as long as all the fields aren't empty.
+        '''
+        if self.username_lineEdit.text() != '' and self.accesskey_lineEdit.text() != '' and self.host_lineEdit.text() != '':
+            self.export_credentials_pushbutton.setEnabled(True)
+
+    def export_credentials(self):
+        '''
+        Exports current credentials to file
+        '''
+        username = self.username_lineEdit.text()
+        password = self.accesskey_lineEdit.text()
+        host = self.host_lineEdit.text()
+        cred_dictionary = {'username': username, 'access_key':password, 'host':host}
+        with open('credentials.json', 'w') as f:
+            json.dump(cred_dictionary, f)
+
+
+    def test_connection(self):
+        self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
 
     def choose_group(self):
         '''
