@@ -70,6 +70,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.minus_push_button.clicked.connect(self.decrease_size)
 
         self.choose_group_pushButton.clicked.connect(self.choose_group)
+        self.group_listWidget.itemClicked.connect(self.set_primary_group)
 
         self.week_table.setRowCount(1)
         self.week_table.setCurrentCell(0,0)
@@ -80,6 +81,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_row = self.today_table.currentRow()   
 
         self.threadpool = QThreadPool()
+
 
         #Print Silent Errors
         sys._excepthook = sys.excepthook 
@@ -100,7 +102,14 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             group_list.append(groupname)
         self.group_listWidget.addItems(group_list)
 
-
+    def set_primary_group(self):
+        '''
+        Sets the currently selected group from the listWidget as primary group.
+        '''
+        self.primary_group = self.group_listWidget.currentItem().text()
+        self.support_group_cases_label.setText(f'{self.primary_group} Cases')
+        self.primary_group_id = self.groups[self.primary_group]
+        print(self.primary_group_id)
 
 
     def threading_function(self):
@@ -119,9 +128,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Gathers data from the VTiger API Class. 
         Returns it all as a list which gets sent to self.manual_refresh_data.
         '''
-        case_count = self.vtigerapi.case_count()
-        week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data()
-        today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data()
+        case_count = self.vtigerapi.case_count(self.primary_group_id)
+        week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data(self.primary_group_id)
+        today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data(self.primary_group_id)
         week_user_list = self.vtigerapi.week_user_stats()
         today_user_list = self.vtigerapi.today_user_stats()
 
