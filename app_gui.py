@@ -95,21 +95,30 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
     def choose_group(self):
         '''
         Populates the group list widget with all VTiger groups
+        Disables Manual Refresh and Auto Refresh Buttons and
+        removes the group name from the main Cases Label until an item
+        is selected.
         '''
         group_list = []
         self.groups = self.vtigerapi.get_groups()
         for groupname in self.groups:
             group_list.append(groupname)
         self.group_listWidget.addItems(group_list)
+        self.support_group_cases_label.setText(f'Cases')
+        self.manual_refresh_pushButton.setEnabled(False)
+        self.auto_refresh_checkBox.setEnabled(False)
 
     def set_primary_group(self):
         '''
-        Sets the currently selected group from the listWidget as primary group.
+        Sets the currently selected group from the listWidget as primary group
+        Once an item is selected, Manual Refresh and Auto Refresh buttons become
+        available and the main Cases Label is updated.
         '''
         self.primary_group = self.group_listWidget.currentItem().text()
         self.support_group_cases_label.setText(f'{self.primary_group} Cases')
         self.primary_group_id = self.groups[self.primary_group]
-        print(self.primary_group_id)
+        self.manual_refresh_pushButton.setEnabled(True)
+        self.auto_refresh_checkBox.setEnabled(True)
 
 
     def threading_function(self):

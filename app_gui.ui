@@ -129,6 +129,9 @@
     </item>
     <item row="10" column="3">
      <widget class="QPushButton" name="manual_refresh_pushButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="text">
        <string>Manual Refresh</string>
       </property>
@@ -305,6 +308,9 @@
     </item>
     <item row="9" column="1">
      <widget class="QCheckBox" name="auto_refresh_checkBox">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="text">
        <string>Auto Refresh</string>
       </property>
