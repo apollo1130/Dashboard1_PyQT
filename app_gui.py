@@ -198,10 +198,15 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Returns it all as a list which gets sent to self.manual_refresh_data.
         '''
         case_count = self.vtigerapi.case_count(self.primary_group_id)
+        month_open_cases, month_closed_cases, month_kill_ratio = self.vtigerapi.get_month_case_data(self.primary_group_id)
         week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data(self.primary_group_id)
         today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data(self.primary_group_id)
+        month_user_list = self.vtigerapi.month_user_stats()
         week_user_list = self.vtigerapi.week_user_stats()
         today_user_list = self.vtigerapi.today_user_stats()
+
+        print(month_open_cases, month_closed_cases, month_kill_ratio)
+        print(month_user_list)
 
         return [case_count, week_open_cases, week_closed_cases, week_kill_ratio, today_open_cases, today_closed_cases, today_kill_ratio, week_user_list, today_user_list]
 

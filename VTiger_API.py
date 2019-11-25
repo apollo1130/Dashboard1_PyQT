@@ -149,6 +149,30 @@ class Vtiger_api:
         return first_of_month
 
 
+    def get_month_closed_cases(self, group_id):
+        '''
+        Returns a list of all the cases that have been closed since the beginning of today.
+        '''
+
+        first_of_month = self.beginning_of_month()
+        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus = 'resolved' AND sla_actual_closureon >= '{first_of_month}' limit 0, 100;")
+        self.month_closed_case_list = []
+        for case in cases['result']:
+            self.month_closed_case_list.append(case)
+        return self.month_closed_case_list
+
+    def get_month_open_cases(self, group_id):
+        '''
+        Returns a list of all the cases that have been closed since the beginning of today.
+        '''
+        first_of_month = self.beginning_of_month()
+        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND createdtime >= '{first_of_month}' limit 0, 100;")
+
+        self.month_open_case_list = []
+        for case in cases['result']:
+            self.month_open_case_list.append(case)
+        return self.month_open_case_list
+
     def get_weeks_closed_cases(self, group_id):
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
@@ -200,6 +224,22 @@ class Vtiger_api:
         return self.today_open_case_list
 
 
+    def get_month_case_data(self, group_id):
+        '''
+        Returns the amount of opened and closed cases for the week.
+        Also returns the weekly kill ratio.
+        '''
+        month_open_cases = len(self.get_month_open_cases(group_id))
+        month_closed_cases = len(self.get_month_closed_cases(group_id))
+        if month_open_cases == 0:
+            month_kill_ratio = str(month_closed_cases) + "00%"
+        elif month_closed_cases == 0:
+            month_kill_ratio = "0%"
+        else:
+            month_kill_ratio = "{:.0%}".format(month_closed_cases/ month_open_cases)
+        
+        return month_open_cases, month_closed_cases, month_kill_ratio
+
     def get_weeks_case_data(self, group_id):
         '''
         Returns the amount of opened and closed cases for the week.
@@ -232,6 +272,27 @@ class Vtiger_api:
             today_kill_ratio = "{:.0%}".format(today_closed_cases / today_open_cases)
         
         return today_open_cases, today_closed_cases, today_kill_ratio
+
+    def month_user_stats(self):
+        '''
+        Returns an ordered list of tuples with each user ID 
+        and the amount of cases they closed this week.
+        '''
+        if self.full_user_dict == {}:
+            self.get_users()
+        #Each user_id with a starting amount of 0
+        newdict = {i:0 for i in self.full_user_dict}
+
+        #Increment each user ID's value by 1 for each closed case
+        for case in self.month_closed_case_list:
+            if case['assigned_user_id'] in newdict:
+                id = case['assigned_user_id']
+                newdict[id] += 1
+
+        #Takes the Dict and sorts it as a list of tuples in descening order
+        sorted_user_list = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
+
+        return sorted_user_list
 
     def week_user_stats(self):
         '''
@@ -280,6 +341,3 @@ if __name__ == '__main__':
             data = f.read()
         credential_dict = json.loads(data)
         vtigerapi = Vtiger_api(credential_dict['username'], credential_dict['access_key'], credential_dict['host'])
-        groups = vtigerapi.get_groups()
-        print(groups)
-
