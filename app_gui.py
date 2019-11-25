@@ -49,25 +49,24 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
-        #Credentials are stored in a separate file with this format:
-        #{"username":"(USERNAME)",
-        #"access_key":"(ACCESS KEY)",
-        #"host":"https://(MYURL).vtiger.com/restapi/v1/vtiger/default"}
-        with open('credentials.json') as f:
-            data = f.read()
-        self.credential_dict = json.loads(data)
-
-        self.username =self.credential_dict['username']
-        self.access_key = self.credential_dict['access_key']
-        self.host = self.credential_dict['host']
-
-        self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
-
         self.manual_refresh_pushButton.clicked.connect(self.threading_function)
         self.auto_refresh_checkBox.clicked.connect(self.auto_refresh)
         self.quit_pushButton.clicked.connect(self.close_the_program)
         self.plus_push_button.clicked.connect(self.increase_size)
         self.minus_push_button.clicked.connect(self.decrease_size)
+
+        self.choose_group_pushButton.clicked.connect(self.choose_group)
+        self.group_listWidget.itemClicked.connect(self.set_primary_group)
+
+        self.import_credentials_pushbutton.clicked.connect(self.import_credentials)
+        
+        self.username_lineEdit.textChanged.connect(self.enable_export)
+        self.accesskey_lineEdit.textChanged.connect(self.enable_export)
+        self.host_lineEdit.textChanged.connect(self.enable_export)
+
+        self.export_credentials_pushbutton.clicked.connect(self.export_credentials)
+
+        self.test_connection_pushButton.clicked.connect(self.test_connection)
 
         self.week_table.setRowCount(1)
         self.week_table.setCurrentCell(0,0)
@@ -79,6 +78,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.threadpool = QThreadPool()
 
+
         #Print Silent Errors
         sys._excepthook = sys.excepthook 
         def exception_hook(exctype, value, traceback):
@@ -86,6 +86,99 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             sys._excepthook(exctype, value, traceback) 
             sys.exit(1) 
         sys.excepthook = exception_hook
+
+    def import_credentials(self):
+        '''
+        Credentials are stored in a separate file with this format:
+        {"username":"(USERNAME)",
+        "access_key":"(ACCESS KEY)",
+        "host":"https://(MYURL).vtiger.com/restapi/v1/vtiger/default"}
+        '''
+        with open('credentials.json') as f:
+            data = f.read()
+        credential_dict = json.loads(data)
+
+        self.username_lineEdit.setText(credential_dict['username'])
+        self.accesskey_lineEdit.setText(credential_dict['access_key'])
+        self.host_lineEdit.setText(credential_dict['host'])
+        self.username =credential_dict['username']
+        self.access_key = credential_dict['access_key']
+        self.host = credential_dict['host']
+
+
+    def enable_export(self):
+        '''
+        Enables the export credentials button as long as all the fields aren't empty.
+        '''
+        if self.username_lineEdit.text() != '' and self.accesskey_lineEdit.text() != '' and self.host_lineEdit.text() != '':
+            self.export_credentials_pushbutton.setEnabled(True)
+        self.username = self.username_lineEdit.text()
+        self.password = self.accesskey_lineEdit.text()
+        self.host = self.host_lineEdit.text()
+
+    def export_credentials(self):
+        '''
+        Exports current credentials to file
+        '''
+        username = self.username_lineEdit.text()
+        password = self.accesskey_lineEdit.text()
+        host = self.host_lineEdit.text()
+        cred_dictionary = {'username': username, 'access_key':password, 'host':host}
+        with open('credentials.json', 'w') as f:
+            json.dump(cred_dictionary, f)
+
+
+    def test_connection(self):
+        '''
+        Tests the credentials' ability to connect to VTiger
+        '''
+        try:
+            self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
+            data = self.vtigerapi.api_call(f"{self.host}/me")
+            first_name = data['result']['first_name']
+            last_name = data['result']['last_name']
+
+            msg = QtWidgets.QMessageBox()
+            msg.setText(f"Hi {first_name} {last_name},\nConnection Successful!\nClick \"Choose Group\" to get started.")
+            msg.setWindowTitle("Success!")
+            msg.setIcon(QtWidgets.QMessageBox.Information)
+            msg.exec_()
+            self.choose_group_pushButton.setEnabled(True)
+        except:
+            msg = QtWidgets.QMessageBox()
+            msg.setText("Connection was not successful.\nCheck your credentials and your internet connection and try again!")
+            msg.setWindowTitle("Connection Failure!")
+            msg.setIcon(QtWidgets.QMessageBox.Information)
+            msg.exec_()
+
+
+    def choose_group(self):
+        '''
+        Populates the group list widget with all VTiger groups
+        Disables Manual Refresh and Auto Refresh Buttons and
+        removes the group name from the main Cases Label until an item
+        is selected.
+        '''
+        group_list = []
+        self.groups = self.vtigerapi.get_groups()
+        for groupname in self.groups:
+            group_list.append(groupname)
+        self.group_listWidget.addItems(group_list)
+        self.support_group_cases_label.setText(f'Cases')
+        self.manual_refresh_pushButton.setEnabled(False)
+        self.auto_refresh_checkBox.setEnabled(False)
+
+    def set_primary_group(self):
+        '''
+        Sets the currently selected group from the listWidget as primary group
+        Once an item is selected, Manual Refresh and Auto Refresh buttons become
+        available and the main Cases Label is updated.
+        '''
+        self.primary_group = self.group_listWidget.currentItem().text()
+        self.support_group_cases_label.setText(f'{self.primary_group} Cases')
+        self.primary_group_id = self.groups[self.primary_group]
+        self.manual_refresh_pushButton.setEnabled(True)
+        self.auto_refresh_checkBox.setEnabled(True)
 
 
     def threading_function(self):
@@ -104,9 +197,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Gathers data from the VTiger API Class. 
         Returns it all as a list which gets sent to self.manual_refresh_data.
         '''
-        case_count = self.vtigerapi.case_count()
-        week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data()
-        today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data()
+        case_count = self.vtigerapi.case_count(self.primary_group_id)
+        week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data(self.primary_group_id)
+        today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data(self.primary_group_id)
         week_user_list = self.vtigerapi.week_user_stats()
         today_user_list = self.vtigerapi.today_user_stats()
 

@@ -87,16 +87,16 @@ class Vtiger_api:
         return group_dict
 
 
-    def case_count(self):
+    def case_count(self, group_id):
         '''
-        Get the amount of cases that aren't closed or resolved and are assigned to the 20x5 group and return the number as an int
+        Get the amount of cases that aren't closed or resolved and are assigned to the supplied group and return the number as an int
         '''
-        case_amount = self.api_call(f"{self.host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = '20x5' AND casestatus != 'closed' AND casestatus != 'resolved';")
+        case_amount = self.api_call(f"{self.host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = {group_id} AND casestatus != 'closed' AND casestatus != 'resolved';")
         num_cases = case_amount['result'][0]['count']
         return num_cases
 
 
-    def get_all_open_cases(self):
+    def get_all_open_cases(self, group_id):
         '''
         A module can only return a maximum of 100 results. To circumvent that, an offset can be supplied which starts returning data from after the offset.
         The amount must be looped through in order to retrieve all the results.
@@ -108,14 +108,14 @@ class Vtiger_api:
         offset = 0
         if num_cases > 100:
             while num_cases > 100:
-                cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
+                cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
                 case_list.append(cases['result'])
                 offset += 100
                 num_cases = num_cases - offset
                 if num_cases <= 100:
                     break
         if num_cases <= 100:
-            cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
+            cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
             case_list.append(cases['result'])
         
         #Combine the multiple lists of dictionaries into one list
@@ -140,25 +140,25 @@ class Vtiger_api:
         return today
 
 
-    def get_weeks_closed_cases(self):
+    def get_weeks_closed_cases(self, group_id):
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
 
         monday = self.beginning_of_week()
-        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{monday}' limit 0, 100;")
+        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus = 'resolved' AND sla_actual_closureon >= '{monday}' limit 0, 100;")
         self.week_closed_case_list = []
         for case in cases['result']:
             self.week_closed_case_list.append(case)
         return self.week_closed_case_list
 
 
-    def get_weeks_open_cases(self):
+    def get_weeks_open_cases(self, group_id):
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
         monday = self.beginning_of_week()
-        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5'AND createdtime >= '{monday}' limit 0, 100;")
+        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND createdtime >= '{monday}' limit 0, 100;")
 
         self.week_open_case_list = []
         for case in cases['result']:
@@ -166,24 +166,24 @@ class Vtiger_api:
         return self.week_open_case_list
 
 
-    def get_today_closed_cases(self):
+    def get_today_closed_cases(self, group_id):
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
         today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
-        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;")
+        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus = 'resolved' AND sla_actual_closureon >= '{today}' limit 0, 100;")
         self.today_closed_case_list = []
         for case in cases['result']:
             self.today_closed_case_list.append(case)
         return self.today_closed_case_list
 
 
-    def get_today_open_cases(self):
+    def get_today_open_cases(self, group_id):
         '''
         Returns a list of all the cases that have been closed since the beginning of today.
         '''
         today = datetime.datetime.now().strftime("%Y-%m-%d") + ' 00:00:00'
-        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = '20x5' AND createdtime >= '{today}' limit 0, 100;")
+        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND createdtime >= '{today}' limit 0, 100;")
 
         self.today_open_case_list = []
         for case in cases['result']:
@@ -191,13 +191,13 @@ class Vtiger_api:
         return self.today_open_case_list
 
 
-    def get_weeks_case_data(self):
+    def get_weeks_case_data(self, group_id):
         '''
         Returns the amount of opened and closed cases for the week.
         Also returns the weekly kill ratio.
         '''
-        weeks_open_cases = len(self.get_weeks_open_cases())
-        weeks_closed_cases = len(self.get_weeks_closed_cases())
+        weeks_open_cases = len(self.get_weeks_open_cases(group_id))
+        weeks_closed_cases = len(self.get_weeks_closed_cases(group_id))
         if weeks_open_cases == 0:
             week_kill_ratio = str(weeks_closed_cases) + "00%"
         elif weeks_closed_cases == 0:
@@ -208,13 +208,13 @@ class Vtiger_api:
         return weeks_open_cases, weeks_closed_cases, week_kill_ratio
    
 
-    def get_today_case_data(self):
+    def get_today_case_data(self, group_id):
         '''
         Returns the amount of opened and closed cases for today.
         Also returns the daily kill ratio.
         '''
-        today_open_cases = len(self.get_today_open_cases())
-        today_closed_cases = len(self.get_today_closed_cases())
+        today_open_cases = len(self.get_today_open_cases(group_id))
+        today_closed_cases = len(self.get_today_closed_cases(group_id))
         if today_open_cases == 0:
             today_kill_ratio = str(today_closed_cases) + "00%"
         elif today_closed_cases == 0:
@@ -265,3 +265,12 @@ class Vtiger_api:
         sorted_user_list = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
 
         return sorted_user_list
+
+if __name__ == '__main__':
+        with open('credentials.json') as f:
+            data = f.read()
+        credential_dict = json.loads(data)
+        vtigerapi = Vtiger_api(credential_dict['username'], credential_dict['access_key'], credential_dict['host'])
+        groups = vtigerapi.get_groups()
+        print(groups)
+
