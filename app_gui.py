@@ -1,6 +1,6 @@
 #https://www.learnpyqt.com/apps/simple-sales-tax-calculator/
 
-import sys, requests, json, time
+import sys, requests, json, time, datetime
 from PyQt5 import uic, QtWidgets 
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -49,6 +49,10 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
+        self.month_label.setText(f"Month:\n{datetime.datetime.now().strftime('%B')}")
+        self.today_label.setText(f"Today:\n{datetime.datetime.now().strftime('%A')}")
+        self.set_week_date()
+
         self.manual_refresh_pushButton.clicked.connect(self.threading_function)
         self.auto_refresh_checkBox.clicked.connect(self.auto_refresh)
         self.quit_pushButton.clicked.connect(self.close_the_program)
@@ -89,6 +93,20 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             sys._excepthook(exctype, value, traceback) 
             sys.exit(1) 
         sys.excepthook = exception_hook
+
+    def set_week_date(self):
+        '''
+        For whichever day of the week it is, this past Monday at 12:00am is returned.
+        Today = datetime.datetime(2019, 9, 5, 15, 31, 13, 134153)
+        Returns: 2019-09-02 00:00:00
+        '''
+        end_of_week = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        day = end_of_week.weekday()
+        beginning_of_week = end_of_week + datetime.timedelta(days = -day) 
+        week_begin = beginning_of_week.strftime("%m/%d")
+        week_end = end_of_week.strftime("%m/%d")
+        self.week_label.setText(f"WEEK:\n{week_begin} - {week_end}")
+        
 
     def import_credentials(self):
         '''
