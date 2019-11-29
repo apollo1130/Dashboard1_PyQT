@@ -55,7 +55,6 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.plus_push_button.clicked.connect(self.increase_size)
         self.minus_push_button.clicked.connect(self.decrease_size)
 
-        self.choose_group_pushButton.clicked.connect(self.choose_group)
         self.group_listWidget.itemClicked.connect(self.set_primary_group)
 
         self.import_credentials_pushbutton.clicked.connect(self.import_credentials)
@@ -143,11 +142,11 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             last_name = data['result']['last_name']
 
             msg = QtWidgets.QMessageBox()
-            msg.setText(f"Hi {first_name} {last_name},\nConnection Successful!\nClick \"Choose Group\" to get started.")
+            msg.setText(f"Hi {first_name} {last_name},\nConnection Successful!\nClick on a GROUP to get started.")
             msg.setWindowTitle("Success!")
             msg.setIcon(QtWidgets.QMessageBox.Information)
             msg.exec_()
-            self.choose_group_pushButton.setEnabled(True)
+            self.choose_group()
         except:
             msg = QtWidgets.QMessageBox()
             msg.setText("Connection was not successful.\nCheck your credentials and your internet connection and try again!")
@@ -209,9 +208,6 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         week_user_list = self.vtigerapi.week_user_stats()
         today_user_list = self.vtigerapi.today_user_stats()
 
-        print(month_open_cases, month_closed_cases, month_kill_ratio)
-        print(month_user_list)
-
         vtiger_data_list = [
             case_count,
             week_open_cases, 
@@ -255,9 +251,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.week_closed_cases_plainTextEdit.setPlainText(str(week_closed_cases))
         self.week_kill_ratio_plainTextEdit.setPlainText(str(week_kill_ratio))
 
-        self.today_open_cases_plainTextEdit.setPlainText(str(month_open_cases))
-        self.today_closed_cases_plainTextEdit.setPlainText(str(month_closed_cases))
-        self.today_kill_ratio_plainTextEdit.setPlainText(str(month_kill_ratio))
+        self.today_open_cases_plainTextEdit.setPlainText(str(today_open_cases))
+        self.today_closed_cases_plainTextEdit.setPlainText(str(today_closed_cases))
+        self.today_kill_ratio_plainTextEdit.setPlainText(str(today_kill_ratio))
 
         self.month_open_cases_plainTextEdit.setPlainText(str(month_open_cases))
         self.month_closed_cases_plainTextEdit.setPlainText(str(month_closed_cases))
