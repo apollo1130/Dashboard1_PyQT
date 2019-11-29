@@ -23,6 +23,9 @@ class Vtiger_api:
         self.today_closed_case_list = []
         self.week_open_case_list = []
         self.week_closed_case_list = []
+        self.month_open_case_list = []
+        self.month_closed_case_list = []
+        self.month_resolved_case_list = []
 
         self.seconds_to_wait = 0
         
@@ -87,35 +90,66 @@ class Vtiger_api:
         return group_dict
 
 
-    def case_count(self, group_id):
+    def case_count(self, group_id, case_type = 'all', date = ''):
         '''
-        Get the amount of cases that aren't closed or resolved and are assigned to the supplied group and return the number as an int
+        Returns an int equal to the number of cases requested by the specific URL.
+        This count is used by self.get_all_open_cases() to retrieve the total number of cases,
+        the number of cases opened this month and the number of cases closed this month.
         '''
-        case_amount = self.api_call(f"{self.host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = {group_id} AND casestatus != 'closed' AND casestatus != 'resolved';")
+        if case_type == 'all':
+            case_amount = self.api_call(f"{self.host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = {group_id} AND casestatus != 'closed' AND casestatus != 'resolved';")
+        elif case_type == 'month_closed':
+            case_amount = self.api_call(f"{self.host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = {group_id} AND casestatus = 'closed' AND sla_actual_closureon >= '{date}' limit 0, 100;")
+        elif case_type == 'month_resolved':
+            case_amount = self.api_call(f"{self.host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = {group_id} AND casestatus = 'resolved' AND sla_actual_closureon >= '{date}' limit 0, 100;")
+        elif case_type == 'month_open':
+            case_amount = self.api_call(f"{self.host}/query?query=SELECT COUNT(*) FROM Cases WHERE group_id = {group_id} AND  createdtime >= '{date}' limit 0, 100;")
+
         num_cases = case_amount['result'][0]['count']
         return num_cases
 
-
-    def get_all_open_cases(self, group_id):
+    def get_all_open_cases(self, group_id, case_type = 'all'):
         '''
         A module can only return a maximum of 100 results. To circumvent that, an offset can be supplied which starts returning data from after the offset.
         The amount must be looped through in order to retrieve all the results.
         For instance if there are 250 cases, first 100 is retrieved, then another 100, and then 50.
         A list is returned of each dictionary that was retrieved this way.
+        This same method is used to return data for cases asked for in a specific time frame.
         '''
-        num_cases = int(self.case_count())
+        if case_type =='all':
+            num_cases = int(self.case_count(group_id))
+        elif case_type == 'month_closed' or case_type == 'month_resolved' or case_type == 'month_open':
+            first_of_month = self.beginning_of_month()
+            num_cases = int(self.case_count(group_id, case_type, first_of_month))
+
         case_list = []
         offset = 0
         if num_cases > 100:
             while num_cases > 100:
-                cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
+                if case_type == 'all':
+                    cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
+                elif case_type == 'month_closed':
+                    cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus = 'closed' AND sla_actual_closureon >= '{first_of_month}' limit {offset}, 100;")
+                elif case_type == 'month_resolved':
+                    cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus = 'resolved' AND sla_actual_closureon >= '{first_of_month}' limit {offset}, 100;")
+                elif case_type == 'month_open': 
+                    cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND createdtime >= '{first_of_month}' limit {offset}, 100;")
+
                 case_list.append(cases['result'])
                 offset += 100
                 num_cases = num_cases - offset
                 if num_cases <= 100:
                     break
         if num_cases <= 100:
-            cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
+            if case_type == 'all':
+                cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus != 'resolved' AND casestatus != 'closed' limit {offset}, 100;")
+            elif case_type == 'month_closed':
+                cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus = 'closed' AND sla_actual_closureon >= '{first_of_month}' limit {offset}, 100;")
+            elif case_type == 'month_resolved':
+                cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus = 'resolved' AND sla_actual_closureon >= '{first_of_month}' limit {offset}, 100;")
+            elif case_type == 'month_open':
+                cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND createdtime >= '{first_of_month}' limit {offset}, 100;")
+
             case_list.append(cases['result'])
         
         #Combine the multiple lists of dictionaries into one list
@@ -124,8 +158,14 @@ class Vtiger_api:
         full_case_list = []
         for caselist in case_list:
             full_case_list += caselist
-        return full_case_list
 
+        if case_type == 'month_closed':
+            self.month_closed_case_list = full_case_list
+        elif case_type == 'month_resolved':
+            self.month_resolved_case_list = full_case_list
+        elif case_type == 'month_open':
+            self.month_open_case_list = full_case_list
+        return full_case_list
 
     def beginning_of_week(self):
         '''
@@ -147,31 +187,6 @@ class Vtiger_api:
         '''
         first_of_month = datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
         return first_of_month
-
-
-    def get_month_closed_cases(self, group_id):
-        '''
-        Returns a list of all the cases that have been closed since the beginning of today.
-        '''
-
-        first_of_month = self.beginning_of_month()
-        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND casestatus = 'resolved' AND sla_actual_closureon >= '{first_of_month}' limit 0, 100;")
-        self.month_closed_case_list = []
-        for case in cases['result']:
-            self.month_closed_case_list.append(case)
-        return self.month_closed_case_list
-
-    def get_month_open_cases(self, group_id):
-        '''
-        Returns a list of all the cases that have been closed since the beginning of today.
-        '''
-        first_of_month = self.beginning_of_month()
-        cases = self.api_call(f"{self.host}/query?query=Select * FROM Cases WHERE group_id = {group_id} AND createdtime >= '{first_of_month}' limit 0, 100;")
-
-        self.month_open_case_list = []
-        for case in cases['result']:
-            self.month_open_case_list.append(case)
-        return self.month_open_case_list
 
     def get_weeks_closed_cases(self, group_id):
         '''
@@ -229,8 +244,9 @@ class Vtiger_api:
         Returns the amount of opened and closed cases for the week.
         Also returns the weekly kill ratio.
         '''
-        month_open_cases = len(self.get_month_open_cases(group_id))
-        month_closed_cases = len(self.get_month_closed_cases(group_id))
+        month_open_cases = len(self.get_all_open_cases(group_id, 'month_open'))
+        month_closed_cases = len(self.get_all_open_cases(group_id, 'month_closed')) + len(self.get_all_open_cases(group_id, 'month_resolved'))
+
         if month_open_cases == 0:
             month_kill_ratio = str(month_closed_cases) + "00%"
         elif month_closed_cases == 0:
@@ -289,6 +305,11 @@ class Vtiger_api:
                 id = case['assigned_user_id']
                 newdict[id] += 1
 
+        for case in self.month_resolved_case_list:
+            if case['assigned_user_id'] in newdict:
+                id = case['assigned_user_id']
+                newdict[id] += 1
+
         #Takes the Dict and sorts it as a list of tuples in descening order
         sorted_user_list = sorted(newdict.items(), key=lambda x: x[1], reverse=True)
 
@@ -341,3 +362,7 @@ if __name__ == '__main__':
             data = f.read()
         credential_dict = json.loads(data)
         vtigerapi = Vtiger_api(credential_dict['username'], credential_dict['access_key'], credential_dict['host'])
+        groupdict = vtigerapi.get_groups()
+        #print(groupdict)
+        print(vtigerapi.get_month_case_data(groupdict['Tech Support']))
+        print(vtigerapi.month_user_stats())

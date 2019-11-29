@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1479</width>
-    <height>962</height>
+    <width>1520</width>
+    <height>992</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,8 +53,8 @@
    <widget class="QLabel" name="daily_label">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>720</y>
+      <x>100</x>
+      <y>540</y>
       <width>185</width>
       <height>64</height>
      </rect>
@@ -74,14 +74,14 @@
     <property name="geometry">
      <rect>
       <x>860</x>
-      <y>680</y>
-      <width>271</width>
-      <height>187</height>
+      <y>580</y>
+      <width>141</width>
+      <height>111</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>55</pointsize>
+      <pointsize>50</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -94,9 +94,9 @@
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>620</y>
+      <y>530</y>
       <width>331</width>
-      <height>301</height>
+      <height>221</height>
      </rect>
     </property>
     <property name="font">
@@ -142,15 +142,15 @@
    <widget class="QPlainTextEdit" name="today_open_cases_plainTextEdit">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>680</y>
-      <width>229</width>
-      <height>187</height>
+      <x>370</x>
+      <y>580</y>
+      <width>131</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>65</pointsize>
+      <pointsize>40</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -164,13 +164,13 @@
      <rect>
       <x>620</x>
       <y>360</y>
-      <width>229</width>
-      <height>187</height>
+      <width>141</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>65</pointsize>
+      <pointsize>40</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -230,8 +230,8 @@
      <rect>
       <x>1144</x>
       <y>320</y>
-      <width>331</width>
-      <height>281</height>
+      <width>321</width>
+      <height>191</height>
      </rect>
     </property>
     <property name="font">
@@ -261,13 +261,13 @@
      <rect>
       <x>860</x>
       <y>360</y>
-      <width>261</width>
-      <height>187</height>
+      <width>151</width>
+      <height>111</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>55</pointsize>
+      <pointsize>50</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -283,7 +283,7 @@
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>640</y>
+      <y>540</y>
       <width>139</width>
       <height>33</height>
      </rect>
@@ -337,7 +337,7 @@
     <property name="geometry">
      <rect>
       <x>860</x>
-      <y>640</y>
+      <y>530</y>
       <width>96</width>
       <height>33</height>
      </rect>
@@ -356,13 +356,13 @@
      <rect>
       <x>380</x>
       <y>360</y>
-      <width>229</width>
-      <height>187</height>
+      <width>181</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>65</pointsize>
+      <pointsize>40</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -378,14 +378,14 @@
     <property name="geometry">
      <rect>
       <x>620</x>
-      <y>680</y>
-      <width>229</width>
-      <height>187</height>
+      <y>580</y>
+      <width>141</width>
+      <height>111</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>65</pointsize>
+      <pointsize>40</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -417,8 +417,8 @@
    <widget class="QLabel" name="daily_closed_cases_label">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>640</y>
+      <x>630</x>
+      <y>540</y>
       <width>154</width>
       <height>33</height>
      </rect>
@@ -435,8 +435,8 @@
    <widget class="Line" name="line">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>600</y>
+      <x>30</x>
+      <y>510</y>
       <width>1461</width>
       <height>16</height>
      </rect>
@@ -595,7 +595,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>9</x>
@@ -687,13 +687,201 @@
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="month_label">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>780</y>
+      <width>221</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>40</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>MONTH</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="month_closed_cases_plainTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>810</y>
+      <width>141</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>40</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="month_open_cases_plainTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>820</y>
+      <width>131</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>40</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="daily_kill_ratio_label_2">
+    <property name="geometry">
+     <rect>
+      <x>850</x>
+      <y>770</y>
+      <width>96</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Kill Rate</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="month_table">
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>760</y>
+      <width>331</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustToContents</enum>
+    </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>160</number>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Close Count</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QLabel" name="daily_closed_cases_label_2">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>770</y>
+      <width>154</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Closed Cases</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="daily_open_cases_label_2">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>780</y>
+      <width>139</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Open Cases</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="month_kill_ratio_plainTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>810</y>
+      <width>151</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>50</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="Line" name="line_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>750</y>
+      <width>1461</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="lineWidth">
+     <number>4</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1479</width>
+     <width>1520</width>
      <height>21</height>
     </rect>
    </property>

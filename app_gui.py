@@ -76,6 +76,10 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_table.setCurrentCell(0,0)
         self.today_row = self.today_table.currentRow()   
 
+        self.month_table.setRowCount(1)
+        self.month_table.setCurrentCell(0,0)
+        self.month_row = self.month_table.currentRow()   
+
         self.threadpool = QThreadPool()
 
 
@@ -208,7 +212,22 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         print(month_open_cases, month_closed_cases, month_kill_ratio)
         print(month_user_list)
 
-        return [case_count, week_open_cases, week_closed_cases, week_kill_ratio, today_open_cases, today_closed_cases, today_kill_ratio, week_user_list, today_user_list]
+        vtiger_data_list = [
+            case_count,
+            week_open_cases, 
+            week_closed_cases, 
+            week_kill_ratio, 
+            today_open_cases, 
+            today_closed_cases, 
+            today_kill_ratio, 
+            week_user_list, 
+            today_user_list, 
+            month_open_cases, 
+            month_closed_cases,
+            month_kill_ratio,
+            month_user_list, ]
+
+        return vtiger_data_list
 
 
     def manual_refresh_data(self, data_list):
@@ -225,6 +244,10 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         today_kill_ratio = data_list[6]
         week_user_list = data_list[7]
         today_user_list = data_list[8]
+        month_open_cases = data_list[9] 
+        month_closed_cases = data_list[10]
+        month_kill_ratio = data_list[11]
+        month_user_list = data_list[12] 
 
         self.total_open_cases_plainTextEdit.setPlainText(case_count)
         
@@ -232,9 +255,13 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.week_closed_cases_plainTextEdit.setPlainText(str(week_closed_cases))
         self.week_kill_ratio_plainTextEdit.setPlainText(str(week_kill_ratio))
 
-        self.today_open_cases_plainTextEdit.setPlainText(str(today_open_cases))
-        self.today_closed_cases_plainTextEdit.setPlainText(str(today_closed_cases))
-        self.today_kill_ratio_plainTextEdit.setPlainText(str(today_kill_ratio))
+        self.today_open_cases_plainTextEdit.setPlainText(str(month_open_cases))
+        self.today_closed_cases_plainTextEdit.setPlainText(str(month_closed_cases))
+        self.today_kill_ratio_plainTextEdit.setPlainText(str(month_kill_ratio))
+
+        self.month_open_cases_plainTextEdit.setPlainText(str(month_open_cases))
+        self.month_closed_cases_plainTextEdit.setPlainText(str(month_closed_cases))
+        self.month_kill_ratio_plainTextEdit.setPlainText(str(month_kill_ratio))
 
         #Fill out the Week's User Table
         #Clear the table contents first
@@ -273,6 +300,25 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.today_table.setRowCount(row_amount + 1) 
                     self.today_row += 1
         self.today_table.setRowCount(self.today_table.rowCount() - 1)
+
+        #Fill out the Month User Table
+        #Clear the table contents first
+        self.month_table.clearContents()
+        self.month_table.setRowCount(1)
+        self.month_table.setCurrentCell(0,0)
+        self.month_row = 0
+
+
+        for item in range(len(month_user_list)):
+            if month_user_list[item][1] > 0:
+                self.month_table.setItem(self.month_row, 0, QtWidgets.QTableWidgetItem((f"{self.vtigerapi.full_user_dict[month_user_list[item][0]][0]} {self.vtigerapi.full_user_dict[month_user_list[item][0]][1]}")))
+                self.month_table.setItem(self.month_row, 1, QtWidgets.QTableWidgetItem((f"{month_user_list[item][1]}")))
+                
+                row_amount = self.month_table.rowCount()
+                if self.month_row + 1 == row_amount:
+                    self.month_table.setRowCount(row_amount + 1) 
+                    self.month_row += 1
+        self.month_table.setRowCount(self.month_table.rowCount() - 1)
 
 
     def auto_refresh(self):
