@@ -93,9 +93,6 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="4" rowspan="2" colspan="2">
-     <widget class="QListWidget" name="group_listWidget"/>
-    </item>
     <item row="2" column="6" rowspan="3" colspan="4">
      <widget class="QLabel" name="support_group_cases_label">
       <property name="font">
@@ -235,20 +232,6 @@
       </column>
      </widget>
     </item>
-    <item row="10" column="0" colspan="3">
-     <widget class="QLabel" name="today_label">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>TODAY</string>
-      </property>
-     </widget>
-    </item>
     <item row="11" column="0" rowspan="2" colspan="11">
      <widget class="Line" name="line">
       <property name="font">
@@ -291,20 +274,6 @@
       </column>
      </widget>
     </item>
-    <item row="13" column="0" rowspan="2" colspan="3">
-     <widget class="QLabel" name="week_label">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>WEEK</string>
-      </property>
-     </widget>
-    </item>
     <item row="15" column="0" colspan="11">
      <widget class="Line" name="line_3">
       <property name="font">
@@ -319,20 +288,6 @@
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="16" column="0" rowspan="2" colspan="4">
-     <widget class="QLabel" name="month_label">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>MONTH</string>
       </property>
      </widget>
     </item>
@@ -589,7 +544,7 @@
      <widget class="QPlainTextEdit" name="month_kill_ratio_plainTextEdit">
       <property name="font">
        <font>
-        <pointsize>35</pointsize>
+        <pointsize>40</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -608,6 +563,51 @@
       </property>
       <property name="text">
        <string>Kill Rate</string>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="0" rowspan="2" colspan="3">
+     <widget class="QLabel" name="month_label">
+      <property name="font">
+       <font>
+        <pointsize>25</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>MONTH</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0" colspan="3">
+     <widget class="QLabel" name="today_label">
+      <property name="font">
+       <font>
+        <pointsize>25</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>TODAY</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4" rowspan="2" colspan="2">
+     <widget class="QListWidget" name="group_listWidget"/>
+    </item>
+    <item row="13" column="0" rowspan="2" colspan="3">
+     <widget class="QLabel" name="week_label">
+      <property name="font">
+       <font>
+        <pointsize>25</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>WEEK</string>
       </property>
      </widget>
     </item>
