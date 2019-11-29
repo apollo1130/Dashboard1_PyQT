@@ -408,6 +408,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_open_cases_plainTextEdit.zoomIn(2)
         self.today_closed_cases_plainTextEdit.zoomIn(2)
         self.today_kill_ratio_plainTextEdit.zoomIn(2)
+        self.month_open_cases_plainTextEdit.zoomIn(2)
+        self.month_closed_cases_plainTextEdit.zoomIn(2)
+        self.month_kill_ratio_plainTextEdit.zoomIn(2)
 
     def decrease_size(self):
         '''
@@ -420,6 +423,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.today_open_cases_plainTextEdit.zoomOut(2)
         self.today_closed_cases_plainTextEdit.zoomOut(2)
         self.today_kill_ratio_plainTextEdit.zoomOut(2)
+        self.month_open_cases_plainTextEdit.zoomOut(2)
+        self.month_closed_cases_plainTextEdit.zoomOut(2)
+        self.month_kill_ratio_plainTextEdit.zoomOut(2)
 
     def close_the_program(self):
         self.close()

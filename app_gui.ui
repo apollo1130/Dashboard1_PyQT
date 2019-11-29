@@ -210,42 +210,6 @@
       </property>
      </widget>
     </item>
-    <item row="8" column="6" rowspan="2">
-     <widget class="QLabel" name="daily_open_cases_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Open Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="7" rowspan="2">
-     <widget class="QLabel" name="daily_closed_cases_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Closed Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="8">
-     <widget class="QLabel" name="daily_kill_ratio_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Kill Rate</string>
-      </property>
-     </widget>
-    </item>
     <item row="8" column="9" rowspan="3" colspan="2">
      <widget class="QTableWidget" name="today_table">
       <property name="font">
@@ -271,20 +235,6 @@
       </column>
      </widget>
     </item>
-    <item row="9" column="8" rowspan="2">
-     <widget class="QPlainTextEdit" name="today_kill_ratio_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>35</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
     <item row="10" column="0" colspan="3">
      <widget class="QLabel" name="today_label">
       <property name="font">
@@ -296,34 +246,6 @@
       </property>
       <property name="text">
        <string>TODAY</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="6">
-     <widget class="QPlainTextEdit" name="today_open_cases_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="7">
-     <widget class="QPlainTextEdit" name="today_closed_cases_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -383,93 +305,6 @@
       </property>
      </widget>
     </item>
-    <item row="13" column="6">
-     <widget class="QLabel" name="week_open_cases_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Open Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="7">
-     <widget class="QLabel" name="week_closed_cases_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Closed Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="13" column="8">
-     <widget class="QLabel" name="week_kill_ratio_label">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Kill Rate</string>
-      </property>
-     </widget>
-    </item>
-    <item row="14" column="6">
-     <widget class="QPlainTextEdit" name="week_open_cases_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="plainText">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="14" column="7">
-     <widget class="QPlainTextEdit" name="week_closed_cases_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="plainText">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="14" column="8">
-     <widget class="QPlainTextEdit" name="week_kill_ratio_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>35</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="plainText">
-       <string/>
-      </property>
-     </widget>
-    </item>
     <item row="15" column="0" colspan="11">
      <widget class="Line" name="line_3">
       <property name="font">
@@ -501,42 +336,6 @@
       </property>
      </widget>
     </item>
-    <item row="16" column="6">
-     <widget class="QLabel" name="daily_open_cases_label_2">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Open Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="16" column="7">
-     <widget class="QLabel" name="daily_closed_cases_label_2">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Closed Cases</string>
-      </property>
-     </widget>
-    </item>
-    <item row="16" column="8">
-     <widget class="QLabel" name="daily_kill_ratio_label_2">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Kill Rate</string>
-      </property>
-     </widget>
-    </item>
     <item row="16" column="9" rowspan="2" colspan="2">
      <widget class="QTableWidget" name="month_table">
       <property name="font">
@@ -562,8 +361,67 @@
       </column>
      </widget>
     </item>
-    <item row="17" column="6">
-     <widget class="QPlainTextEdit" name="month_open_cases_plainTextEdit">
+    <item row="0" column="4" colspan="2">
+     <widget class="QPushButton" name="test_connection_pushButton">
+      <property name="text">
+       <string>Connect to Server</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="5">
+     <widget class="QPlainTextEdit" name="today_open_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="5">
+     <widget class="QLabel" name="daily_open_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Open Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="6">
+     <widget class="QPlainTextEdit" name="today_closed_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="6">
+     <widget class="QLabel" name="daily_closed_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Closed Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="7">
+     <widget class="QPlainTextEdit" name="today_kill_ratio_plainTextEdit">
       <property name="font">
        <font>
         <pointsize>40</pointsize>
@@ -573,24 +431,161 @@
       </property>
       <property name="readOnly">
        <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="7">
+     <widget class="QLabel" name="daily_kill_ratio_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Kill Rate</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="5">
+     <widget class="QLabel" name="week_open_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Open Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="5">
+     <widget class="QPlainTextEdit" name="week_open_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="6">
+     <widget class="QPlainTextEdit" name="week_closed_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="6">
+     <widget class="QLabel" name="week_closed_cases_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Closed Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="7">
+     <widget class="QPlainTextEdit" name="week_kill_ratio_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>40</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="7">
+     <widget class="QLabel" name="week_kill_ratio_label">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Kill Rate</string>
+      </property>
+     </widget>
+    </item>
+    <item row="17" column="5">
+     <widget class="QPlainTextEdit" name="month_open_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="5">
+     <widget class="QLabel" name="daily_open_cases_label_2">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Open Cases</string>
+      </property>
+     </widget>
+    </item>
+    <item row="17" column="6">
+     <widget class="QPlainTextEdit" name="month_closed_cases_plainTextEdit">
+      <property name="font">
+       <font>
+        <pointsize>45</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="6">
+     <widget class="QLabel" name="daily_closed_cases_label_2">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Closed Cases</string>
       </property>
      </widget>
     </item>
     <item row="17" column="7">
-     <widget class="QPlainTextEdit" name="month_closed_cases_plainTextEdit">
-      <property name="font">
-       <font>
-        <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="17" column="8">
      <widget class="QPlainTextEdit" name="month_kill_ratio_plainTextEdit">
       <property name="font">
        <font>
@@ -604,10 +599,15 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="4" colspan="2">
-     <widget class="QPushButton" name="test_connection_pushButton">
+    <item row="16" column="7">
+     <widget class="QLabel" name="daily_kill_ratio_label_2">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>Connect to Server</string>
+       <string>Kill Rate</string>
       </property>
      </widget>
     </item>
