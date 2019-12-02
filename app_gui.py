@@ -153,12 +153,8 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         try:
             self.vtigerapi = VTiger_API.Vtiger_api(self.username, self.access_key, self.host)
-            data = self.vtigerapi.api_call(f"{self.host}/me")
-            first_name = data['result']['first_name']
-            last_name = data['result']['last_name']
-
             msg = QtWidgets.QMessageBox()
-            msg.setText(f"Hi {first_name} {last_name},\nConnection Successful!\nClick on a GROUP to get started.")
+            msg.setText(f"Hi {self.vtigerapi.first_name} {self.vtigerapi.last_name},\nConnection Successful!\nClick on a GROUP to get started.")
             msg.setWindowTitle("Success!")
             msg.setIcon(QtWidgets.QMessageBox.Information)
             msg.exec_()
