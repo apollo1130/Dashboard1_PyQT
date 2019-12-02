@@ -338,7 +338,7 @@
      </widget>
     </item>
     <item row="8" column="5">
-     <widget class="QLabel" name="daily_open_cases_label">
+     <widget class="QLabel" name="today_open_cases_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>
@@ -364,7 +364,7 @@
      </widget>
     </item>
     <item row="8" column="6">
-     <widget class="QLabel" name="daily_closed_cases_label">
+     <widget class="QLabel" name="today_closed_cases_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>
@@ -376,7 +376,7 @@
      </widget>
     </item>
     <item row="10" column="7">
-     <widget class="QPlainTextEdit" name="today_kill_ratio_plainTextEdit">
+     <widget class="QPlainTextEdit" name="today_kill_rate_plainTextEdit">
       <property name="font">
        <font>
         <pointsize>40</pointsize>
@@ -390,7 +390,7 @@
      </widget>
     </item>
     <item row="8" column="7">
-     <widget class="QLabel" name="daily_kill_ratio_label">
+     <widget class="QLabel" name="daily_kill_rate_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>
@@ -460,7 +460,7 @@
      </widget>
     </item>
     <item row="14" column="7">
-     <widget class="QPlainTextEdit" name="week_kill_ratio_plainTextEdit">
+     <widget class="QPlainTextEdit" name="week_kill_rate_plainTextEdit">
       <property name="font">
        <font>
         <pointsize>40</pointsize>
@@ -477,7 +477,7 @@
      </widget>
     </item>
     <item row="13" column="7">
-     <widget class="QLabel" name="week_kill_ratio_label">
+     <widget class="QLabel" name="week_kill_rate_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>
@@ -503,7 +503,7 @@
      </widget>
     </item>
     <item row="16" column="5">
-     <widget class="QLabel" name="daily_open_cases_label_2">
+     <widget class="QLabel" name="month_open_cases_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>
@@ -529,7 +529,7 @@
      </widget>
     </item>
     <item row="16" column="6">
-     <widget class="QLabel" name="daily_closed_cases_label_2">
+     <widget class="QLabel" name="month_closed_cases_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>
@@ -541,7 +541,7 @@
      </widget>
     </item>
     <item row="17" column="7">
-     <widget class="QPlainTextEdit" name="month_kill_ratio_plainTextEdit">
+     <widget class="QPlainTextEdit" name="month_kill_rate_plainTextEdit">
       <property name="font">
        <font>
         <pointsize>40</pointsize>
@@ -555,7 +555,7 @@
      </widget>
     </item>
     <item row="16" column="7">
-     <widget class="QLabel" name="daily_kill_ratio_label_2">
+     <widget class="QLabel" name="month_kill_rate_label">
       <property name="font">
        <font>
         <pointsize>20</pointsize>

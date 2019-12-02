@@ -217,9 +217,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Returns it all as a list which gets sent to self.manual_refresh_data.
         '''
         case_count = self.vtigerapi.case_count(self.primary_group_id)
-        month_open_cases, month_closed_cases, month_kill_ratio = self.vtigerapi.get_month_case_data(self.primary_group_id)
-        week_open_cases, week_closed_cases, week_kill_ratio = self.vtigerapi.get_weeks_case_data(self.primary_group_id)
-        today_open_cases, today_closed_cases, today_kill_ratio = self.vtigerapi.get_today_case_data(self.primary_group_id)
+        month_open_cases, month_closed_cases, month_kill_rate = self.vtigerapi.get_month_case_data(self.primary_group_id)
+        week_open_cases, week_closed_cases, week_kill_rate = self.vtigerapi.get_weeks_case_data(self.primary_group_id)
+        today_open_cases, today_closed_cases, today_kill_rate = self.vtigerapi.get_today_case_data(self.primary_group_id)
         month_user_list = self.vtigerapi.month_user_stats()
         week_user_list = self.vtigerapi.week_user_stats()
         today_user_list = self.vtigerapi.today_user_stats()
@@ -228,15 +228,15 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             case_count,
             week_open_cases, 
             week_closed_cases, 
-            week_kill_ratio, 
+            week_kill_rate, 
             today_open_cases, 
             today_closed_cases, 
-            today_kill_ratio, 
+            today_kill_rate, 
             week_user_list, 
             today_user_list, 
             month_open_cases, 
             month_closed_cases,
-            month_kill_ratio,
+            month_kill_rate,
             month_user_list, ]
 
         return vtiger_data_list
@@ -256,30 +256,30 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         case_count = data_list[0]
         week_open_cases = data_list[1]
         week_closed_cases = data_list[2]
-        week_kill_ratio = data_list[3]
+        week_kill_rate = data_list[3]
         today_open_cases = data_list[4]
         today_closed_cases = data_list[5]
-        today_kill_ratio = data_list[6]
+        today_kill_rate = data_list[6]
         week_user_list = data_list[7]
         today_user_list = data_list[8]
         month_open_cases = data_list[9] 
         month_closed_cases = data_list[10]
-        month_kill_ratio = data_list[11]
+        month_kill_rate = data_list[11]
         month_user_list = data_list[12]         
 
         self.total_open_cases_plainTextEdit.setPlainText(case_count)
         
         self.week_open_cases_plainTextEdit.setPlainText(str(week_open_cases))
         self.week_closed_cases_plainTextEdit.setPlainText(str(week_closed_cases))
-        self.week_kill_ratio_plainTextEdit.setPlainText(str(week_kill_ratio))
+        self.week_kill_rate_plainTextEdit.setPlainText(str(week_kill_rate))
 
         self.today_open_cases_plainTextEdit.setPlainText(str(today_open_cases))
         self.today_closed_cases_plainTextEdit.setPlainText(str(today_closed_cases))
-        self.today_kill_ratio_plainTextEdit.setPlainText(str(today_kill_ratio))
+        self.today_kill_rate_plainTextEdit.setPlainText(str(today_kill_rate))
 
         self.month_open_cases_plainTextEdit.setPlainText(str(month_open_cases))
         self.month_closed_cases_plainTextEdit.setPlainText(str(month_closed_cases))
-        self.month_kill_ratio_plainTextEdit.setPlainText(str(month_kill_ratio))
+        self.month_kill_rate_plainTextEdit.setPlainText(str(month_kill_rate))
 
         #Fill out the Week's User Table
         #Clear the table contents first
@@ -300,7 +300,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.week_row += 1
         self.week_table.setRowCount(self.week_table.rowCount() - 1)
         
-        #Fill out the Daily User Table
+        #Fill out the Today User Table
         #Clear the table contents first
         self.today_table.clearContents()
         self.today_table.setRowCount(1)
@@ -408,13 +408,13 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.total_open_cases_plainTextEdit.zoomIn(2)
         self.week_open_cases_plainTextEdit.zoomIn(2)
         self.week_closed_cases_plainTextEdit.zoomIn(2)
-        self.week_kill_ratio_plainTextEdit.zoomIn(2)
+        self.week_kill_rate_plainTextEdit.zoomIn(2)
         self.today_open_cases_plainTextEdit.zoomIn(2)
         self.today_closed_cases_plainTextEdit.zoomIn(2)
-        self.today_kill_ratio_plainTextEdit.zoomIn(2)
+        self.today_kill_rate_plainTextEdit.zoomIn(2)
         self.month_open_cases_plainTextEdit.zoomIn(2)
         self.month_closed_cases_plainTextEdit.zoomIn(2)
-        self.month_kill_ratio_plainTextEdit.zoomIn(2)
+        self.month_kill_rate_plainTextEdit.zoomIn(2)
 
     def decrease_size(self):
         '''
@@ -423,13 +423,13 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.total_open_cases_plainTextEdit.zoomOut(2)
         self.week_open_cases_plainTextEdit.zoomOut(2)
         self.week_closed_cases_plainTextEdit.zoomOut(2)
-        self.week_kill_ratio_plainTextEdit.zoomOut(2)
+        self.week_kill_rate_plainTextEdit.zoomOut(2)
         self.today_open_cases_plainTextEdit.zoomOut(2)
         self.today_closed_cases_plainTextEdit.zoomOut(2)
-        self.today_kill_ratio_plainTextEdit.zoomOut(2)
+        self.today_kill_rate_plainTextEdit.zoomOut(2)
         self.month_open_cases_plainTextEdit.zoomOut(2)
         self.month_closed_cases_plainTextEdit.zoomOut(2)
-        self.month_kill_ratio_plainTextEdit.zoomOut(2)
+        self.month_kill_rate_plainTextEdit.zoomOut(2)
 
     def close_the_program(self):
         self.close()
