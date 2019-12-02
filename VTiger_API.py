@@ -8,7 +8,7 @@
 #Get information about a module's fields, Cases in this example
 #url = f"{host}/describe?elementType=Employees"
 
-import requests, json, datetime, collections, time
+import requests, json, datetime, collections, time, pytz
 
 class Vtiger_api:
     def __init__(self, username, access_key, host):
@@ -29,6 +29,7 @@ class Vtiger_api:
 
         self.seconds_to_wait = 0
         
+        self.first_name, self.last_name, self.primary_email, self.utc_offset = self.get_user_personal_info()
 
     def api_call(self, url):
         '''
@@ -46,6 +47,23 @@ class Vtiger_api:
             self.seconds_to_wait = 0
         r_text = json.loads(r.text)
         return r_text
+
+    def get_user_personal_info(self):
+        '''
+        Retrieves the name, email and utc_offset of the user whose credentials are used to run this script
+        '''
+        data = self.api_call(f"{self.host}/me")
+        first_name = data['result']['first_name']
+        last_name = data['result']['last_name']
+        email = data['result']['email1']
+        
+        #Time zone is presented as 'America/New_York'
+        #pytz is used to determine the utc_offset based on the time zone
+        timezone = data['result']['time_zone']
+        current_time = datetime.datetime.now().astimezone(pytz.timezone(timezone))
+        utc_offset = current_time.utcoffset().total_seconds()/60/60
+
+        return first_name, last_name, email, utc_offset
 
 
     def get_users(self):    
@@ -186,6 +204,13 @@ class Vtiger_api:
         Returns: 2019-11-01 00:00:00
         '''
         first_of_month = datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        #Case created time is displayed in UTC, but VTiger is configured to display data in EST in this example
+        #A case might return a created time of '2019-12-01 01:00:44', 
+        #but the created time displayed in VTiger is 11-30-2019 08:00 PM.
+        #This case should not be part of the month's data since it appears to be from the previous month
+        #according to the user. Therefore, 5 hours are added to the beginning of the month.
+        #If a 
+        first_of_month = first_of_month + datetime.timedelta(hours = 5)
         return first_of_month
 
     def get_weeks_closed_cases(self, group_id):
@@ -363,6 +388,6 @@ if __name__ == '__main__':
         credential_dict = json.loads(data)
         vtigerapi = Vtiger_api(credential_dict['username'], credential_dict['access_key'], credential_dict['host'])
         groupdict = vtigerapi.get_groups()
-        #print(groupdict)
+        print(groupdict)
         print(vtigerapi.get_month_case_data(groupdict['Tech Support']))
-        print(vtigerapi.month_user_stats())
+
