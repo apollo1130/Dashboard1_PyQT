@@ -186,6 +186,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.support_group_cases_label.setText(f'Cases')
         self.manual_refresh_pushButton.setEnabled(False)
         self.auto_refresh_checkBox.setEnabled(False)
+        
 
     def set_primary_group(self):
         '''
@@ -198,6 +199,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.primary_group_id = self.groups[self.primary_group]
         self.manual_refresh_pushButton.setEnabled(True)
         self.auto_refresh_checkBox.setEnabled(True)
+        
+        #When a new group is selected, it auto-updates the data fields.
+        self.threading_function()
 
 
     def threading_function(self):
