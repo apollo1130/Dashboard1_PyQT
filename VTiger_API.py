@@ -204,13 +204,14 @@ class Vtiger_api:
         Returns: 2019-11-01 00:00:00
         '''
         first_of_month = datetime.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-        #Case created time is displayed in UTC, but VTiger is configured to display data in EST in this example
-        #A case might return a created time of '2019-12-01 01:00:44', 
-        #but the created time displayed in VTiger is 11-30-2019 08:00 PM.
+        #Case created time is displayed in UTC, but VTiger is configured to display data in the user's
+        #configured time zone. As an example:
+        #A case might return a created time of '2019-12-01 01:00:44 UTC', 
+        #but the created time displayed in VTiger is 11-30-2019 08:00 PM EST.
         #This case should not be part of the month's data since it appears to be from the previous month
-        #according to the user. Therefore, 5 hours are added to the beginning of the month.
-        #If a 
-        first_of_month = first_of_month + datetime.timedelta(hours = 5)
+        #according to the user. Therefore, we add the offset to the time.
+        #If the user has an offset of -5 (EST), then the first of the month would now be 2019-12-01 05:00:00
+        first_of_month = first_of_month - datetime.timedelta(hours = self.utc_offset)
         return first_of_month
 
     def get_weeks_closed_cases(self, group_id):
@@ -390,4 +391,5 @@ if __name__ == '__main__':
         groupdict = vtigerapi.get_groups()
         print(groupdict)
         print(vtigerapi.get_month_case_data(groupdict['Tech Support']))
+        
 
