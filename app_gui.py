@@ -49,28 +49,24 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
-        self.month_label.setText(f"Month:\n{datetime.datetime.now().strftime('%B')}")
-        self.today_label.setText(f"Today:\n{datetime.datetime.now().strftime('%A')}")
+        #Set the day, week and month labels with the current information.
         self.set_week_date()
 
+        #Connect widgets to their respective functions.
         self.manual_refresh_pushButton.clicked.connect(self.threading_function)
         self.auto_refresh_checkBox.clicked.connect(self.auto_refresh)
         self.quit_pushButton.clicked.connect(self.close_the_program)
         self.plus_push_button.clicked.connect(self.increase_size)
         self.minus_push_button.clicked.connect(self.decrease_size)
-
         self.group_listWidget.itemClicked.connect(self.set_primary_group)
-
         self.import_credentials_pushbutton.clicked.connect(self.import_credentials)
-        
         self.username_lineEdit.textChanged.connect(self.enable_export)
         self.accesskey_lineEdit.textChanged.connect(self.enable_export)
         self.host_lineEdit.textChanged.connect(self.enable_export)
-
         self.export_credentials_pushbutton.clicked.connect(self.export_credentials)
-
         self.test_connection_pushButton.clicked.connect(self.test_connection)
 
+        #Initialize the tables so they start from the correct locations.
         self.week_table.setRowCount(1)
         self.week_table.setCurrentCell(0,0)
         self.week_row = self.week_table.currentRow()
@@ -106,6 +102,8 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         week_begin = beginning_of_week.strftime("%m/%d")
         week_end = end_of_week.strftime("%m/%d")
         self.week_label.setText(f"WEEK:\n{week_begin} - {week_end}")
+        self.month_label.setText(f"Month:\n{datetime.datetime.now().strftime('%B')}")
+        self.today_label.setText(f"Today:\n{datetime.datetime.now().strftime('%A')}")
         
 
     def import_credentials(self):
@@ -249,6 +247,12 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         This function uses all the data supplied from gather_vtiger_data and fills out
         the respective fields. This is all done in a separate thread so as to not freeze the GUI.
         '''
+
+        #set_week_date() is put here so that the Day, Week and Month labels auto
+        #update every time the data is refreshed. Otherwise, if the software is running
+        #for multiple days it would only change once when it was initially opened.
+        self.set_week_date()
+
         case_count = data_list[0]
         week_open_cases = data_list[1]
         week_closed_cases = data_list[2]
@@ -261,7 +265,7 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         month_open_cases = data_list[9] 
         month_closed_cases = data_list[10]
         month_kill_ratio = data_list[11]
-        month_user_list = data_list[12] 
+        month_user_list = data_list[12]         
 
         self.total_open_cases_plainTextEdit.setPlainText(case_count)
         
