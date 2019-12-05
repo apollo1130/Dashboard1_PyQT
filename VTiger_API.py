@@ -282,7 +282,9 @@ class Vtiger_api:
         month_open_cases = len(self.get_all_open_cases(group_id, 'month_open'))
         month_closed_cases = len(self.get_all_open_cases(group_id, 'month_closed')) + len(self.get_all_open_cases(group_id, 'month_resolved'))
 
-        if month_open_cases == 0:
+        if month_open_cases == 0 and month_closed_cases == 0:
+            month_kill_ratio = "0%"
+        elif month_open_cases == 0:
             month_kill_ratio = str(month_closed_cases) + "00%"
         elif month_closed_cases == 0:
             month_kill_ratio = "0%"
@@ -298,7 +300,9 @@ class Vtiger_api:
         '''
         weeks_open_cases = len(self.get_weeks_open_cases(group_id))
         weeks_closed_cases = len(self.get_weeks_closed_cases(group_id))
-        if weeks_open_cases == 0:
+        if weeks_closed_cases == 0 and weeks_open_cases == 0:
+            week_kill_ratio = "0%"
+        elif weeks_open_cases == 0:
             week_kill_ratio = str(weeks_closed_cases) + "00%"
         elif weeks_closed_cases == 0:
             week_kill_ratio = "0%"
@@ -315,7 +319,9 @@ class Vtiger_api:
         '''
         today_open_cases = len(self.get_today_open_cases(group_id))
         today_closed_cases = len(self.get_today_closed_cases(group_id))
-        if today_open_cases == 0:
+        if today_open_cases == 0 and today_closed_cases == 0:
+            today_kill_ratio = "0%"
+        elif today_open_cases == 0:
             today_kill_ratio = str(today_closed_cases) + "00%"
         elif today_closed_cases == 0:
             today_kill_ratio = "0%"
