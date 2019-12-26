@@ -1,6 +1,6 @@
 #https://www.learnpyqt.com/apps/simple-sales-tax-calculator/
 
-import sys, requests, json, time, datetime
+import sys, requests, json, time, datetime, os
 from PyQt5 import uic, QtWidgets 
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -430,6 +430,13 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.month_open_cases_plainTextEdit.zoomOut(2)
         self.month_closed_cases_plainTextEdit.zoomOut(2)
         self.month_kill_rate_plainTextEdit.zoomOut(2)
+
+
+        """Restarts the current program.
+        Note: this function does not return. Any cleanup action (like
+        saving data) must be done before calling this function."""
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
 
     def close_the_program(self):
         self.close()
