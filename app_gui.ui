@@ -633,8 +633,24 @@
     </item>
     <item row="4" column="5">
      <widget class="QCheckBox" name="today_checkBox">
+      <property name="toolTip">
+       <string>This is a test tooltip</string>
+      </property>
       <property name="text">
        <string>Display Today Stats</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="5">
+     <widget class="QCheckBox" name="auto_hide_show_checkBox">
+      <property name="toolTip">
+       <string>Every Monday, the TODAY and WEEK widgets are identical. Enabling this checkbox will prevent the WEEK widgets from being displayed as long as they are identical.</string>
+      </property>
+      <property name="text">
+       <string>Auto Hide/Show Duplicate Widgets</string>
       </property>
       <property name="checked">
        <bool>true</bool>
