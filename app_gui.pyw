@@ -65,6 +65,10 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.host_lineEdit.textChanged.connect(self.enable_export)
         self.export_credentials_pushbutton.clicked.connect(self.export_credentials)
         self.test_connection_pushButton.clicked.connect(self.test_connection)
+        self.today_checkBox.stateChanged.connect(self.display_stats)
+        self.week_checkBox.stateChanged.connect(self.display_stats)
+        self.month_checkBox.stateChanged.connect(self.display_stats)
+
 
         #Initialize the tables so they start from the correct locations.
         self.week_table.setRowCount(1)
@@ -431,12 +435,78 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.month_closed_cases_plainTextEdit.zoomOut(2)
         self.month_kill_rate_plainTextEdit.zoomOut(2)
 
-
         """Restarts the current program.
         Note: this function does not return. Any cleanup action (like
         saving data) must be done before calling this function."""
         python = sys.executable
         os.execl(python, python, * sys.argv)
+
+    def display_stats(self):
+        '''
+        Shows/hides display stats based on the checkbox selection
+        '''
+        if self.today_checkBox.isChecked():
+            self.today_open_cases_plainTextEdit.show()
+            self.today_closed_cases_plainTextEdit.show()
+            self.today_kill_rate_plainTextEdit.show()
+            self.today_table.show()
+            self.today_label.show()
+            self.today_open_cases_label.show()
+            self.today_closed_cases_label.show()
+            self.daily_kill_rate_label.show()
+            self.line_2.show()
+        else:
+            self.today_open_cases_plainTextEdit.hide()
+            self.today_closed_cases_plainTextEdit.hide()
+            self.today_kill_rate_plainTextEdit.hide()
+            self.today_table.hide()
+            self.today_label.hide()
+            self.today_open_cases_label.hide()
+            self.today_closed_cases_label.hide()
+            self.daily_kill_rate_label.hide()
+            self.line_2.hide()
+
+        if self.week_checkBox.isChecked():
+            self.week_open_cases_plainTextEdit.show()
+            self.week_closed_cases_plainTextEdit.show()
+            self.week_kill_rate_plainTextEdit.show()
+            self.week_table.show()
+            self.week_label.show()
+            self.week_open_cases_label.show()
+            self.week_closed_cases_label.show()
+            self.week_kill_rate_label.show()
+            self.line.show()
+        else:
+            self.week_open_cases_plainTextEdit.hide()
+            self.week_closed_cases_plainTextEdit.hide()
+            self.week_kill_rate_plainTextEdit.hide()
+            self.week_table.hide()
+            self.week_label.hide()
+            self.week_open_cases_label.hide()
+            self.week_closed_cases_label.hide()
+            self.week_kill_rate_label.hide()
+            self.line.hide()
+
+        if self.month_checkBox.isChecked():
+            self.month_open_cases_plainTextEdit.show()
+            self.month_closed_cases_plainTextEdit.show()
+            self.month_kill_rate_plainTextEdit.show()
+            self.month_table.show()
+            self.month_label.show()
+            self.month_open_cases_label.show()
+            self.month_closed_cases_label.show()
+            self.month_kill_rate_label.show()
+            self.line_3.show()
+        else:
+            self.month_open_cases_plainTextEdit.hide()
+            self.month_closed_cases_plainTextEdit.hide()
+            self.month_kill_rate_plainTextEdit.hide()
+            self.month_table.hide()
+            self.month_label.hide()
+            self.month_open_cases_label.hide()
+            self.month_closed_cases_label.hide()
+            self.month_kill_rate_label.hide()
+            self.line_3.hide()
 
     def close_the_program(self):
         self.close()

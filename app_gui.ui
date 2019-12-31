@@ -611,6 +611,36 @@
       </property>
      </widget>
     </item>
+    <item row="6" column="5">
+     <widget class="QCheckBox" name="month_checkBox">
+      <property name="text">
+       <string>Display Monthly Stats</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="5">
+     <widget class="QCheckBox" name="week_checkBox">
+      <property name="text">
+       <string>Display Weekly Stats</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="5">
+     <widget class="QCheckBox" name="today_checkBox">
+      <property name="text">
+       <string>Display Today Stats</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
