@@ -342,6 +342,24 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.month_row += 1
         self.month_table.setRowCount(self.month_table.rowCount() - 1)
 
+        #Hide week stats if today and week stats are the same. 
+        #This occurs every Monday
+        #Comparing Kill Rate would be redundant.
+        if (    self.today_open_cases_plainTextEdit.toPlainText() == self.week_open_cases_plainTextEdit.toPlainText()
+            and self.today_closed_cases_plainTextEdit.toPlainText() == self.week_closed_cases_plainTextEdit.toPlainText()
+        ):
+            self.week_checkBox.setChecked(False)
+        else:
+            self.week_checkBox.setChecked(True)
+
+        #Hide month stats if week and month stats are the same.
+        #This only occurs if the month begins at the same time as the week.
+        if (    self.week_open_cases_plainTextEdit.toPlainText() == self.month_open_cases_plainTextEdit.toPlainText()
+            and self.week_closed_cases_plainTextEdit.toPlainText() == self.month_closed_cases_plainTextEdit.toPlainText()
+        ):
+            self.month_checkBox.setChecked(False)     
+        else:
+            self.month_checkBox.setChecked(True)
 
     def auto_refresh(self):
         '''
@@ -437,9 +455,9 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         """Restarts the current program.
         Note: this function does not return. Any cleanup action (like
-        saving data) must be done before calling this function."""
+        saving data) must be done before calling this function.
         python = sys.executable
-        os.execl(python, python, * sys.argv)
+        os.execl(python, python, * sys.argv)"""
 
     def display_stats(self):
         '''
