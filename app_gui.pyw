@@ -362,6 +362,15 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.month_checkBox.setChecked(True)
 
+            #Hide month stats if day and month stats are the same.
+            #This only occurs on the day when a new month begins.
+            if (    self.today_open_cases_plainTextEdit.toPlainText() == self.month_open_cases_plainTextEdit.toPlainText()
+                and self.today_closed_cases_plainTextEdit.toPlainText() == self.month_closed_cases_plainTextEdit.toPlainText()
+            ):
+                self.month_checkBox.setChecked(False)     
+            else:
+                self.month_checkBox.setChecked(True)
+
     def auto_refresh(self):
         '''
         #This function causes the manual_refresh_data() function to happen at regular intervals.
