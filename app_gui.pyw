@@ -81,7 +81,10 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.month_table.setRowCount(1)
         self.month_table.setCurrentCell(0,0)
-        self.month_row = self.month_table.currentRow()   
+        self.month_row = self.month_table.currentRow()
+
+        #Set the font size of all the tables
+        self.table_font_size = 12   
 
         self.threadpool = QThreadPool()
 
@@ -447,6 +450,10 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.month_open_cases_plainTextEdit.zoomIn(2)
         self.month_closed_cases_plainTextEdit.zoomIn(2)
         self.month_kill_rate_plainTextEdit.zoomIn(2)
+        self.table_font_size += 1
+        self.today_table.setStyleSheet(f"font: {self.table_font_size}pt Segoe UI")
+        self.week_table.setStyleSheet(f"font: {self.table_font_size}pt Segoe UI")
+        self.month_table.setStyleSheet(f"font: {self.table_font_size}pt Segoe UI")
 
     def decrease_size(self):
         '''
@@ -462,6 +469,11 @@ class vtiger_api_gui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.month_open_cases_plainTextEdit.zoomOut(2)
         self.month_closed_cases_plainTextEdit.zoomOut(2)
         self.month_kill_rate_plainTextEdit.zoomOut(2)
+        self.table_font_size -= 1
+        self.today_table.setStyleSheet(f"font: {self.table_font_size}pt Segoe UI")
+        self.week_table.setStyleSheet(f"font: {self.table_font_size}pt Segoe UI")
+        self.month_table.setStyleSheet(f"font: {self.table_font_size}pt Segoe UI")
+
 
         """Restarts the current program.
         Note: this function does not return. Any cleanup action (like
